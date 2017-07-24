@@ -38,8 +38,9 @@ channels={ 'Fz'  ,  'Cz',    'Pz' ,   'Oz'  ,  'P3'  ,  'P4'   , 'PO7'   , 'PO8'
 epochRange = 1:120*7*5;
 channelRange=1:8;
 labelRange = [];
-siftscale = [3 3];  % Determines lamda length [ms] and signal amp [microV]
-imagescale=4;    % Para agarrar dos decimales NN.NNNN
+siftscale = [4*3 7.5*3];  % Determines lamda length [ms] and signal amp [microV]
+imagescale=7.5*4;    % Para agarrar dos decimales NN.NNNN
+timescale=4*4;
 siftdescriptordensity=1;
 Fs=256;
 windowsize=1;
@@ -70,7 +71,7 @@ for subject=1:8
             
             % Process one epoch if the number of flashes has been reached.
             if (processedflashes>globalnumberofsamples)
-                SignalAveragingPerClassSegment;
+                P300ProcessSegment;
                 processedflashes=0;
             end
             
@@ -98,7 +99,7 @@ for subject=1:8
             end
             
         end
-        SignalAveragingPerClassSegment;
+        P300ProcessSegment;
         
     end
     toc
