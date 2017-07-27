@@ -38,16 +38,25 @@ channels={ 'Fz'  ,  'Cz',    'Pz' ,   'Oz'  ,  'P3'  ,  'P4'   , 'PO7'   , 'PO8'
 epochRange = 1:120*7*5;
 channelRange=1:8;
 labelRange = [];
-siftscale = [4*3 7.5*3];  % Determines lamda length [ms] and signal amp [microV]
-imagescale=7.5*4;    % Para agarrar dos decimales NN.NNNN
+siftscale = [4*3 8];  % Determines lamda length [ms] and signal amp [microV]
+imagescale=5*4;    % Para agarrar dos decimales NN.NNNN
 timescale=4*4;
+qKS=128-13;
+%qKS=ceil(0.29*Fs*imagescale):floor(0.29*Fs*imagescale+Fs*imagescale/4-1);
+
+siftscale = [3 3];  % Determines lamda length [ms] and signal amp [microV]
+imagescale=4;    % Para agarrar dos decimales NN.NNNN
+timescale=4;
+qKS=32-5;
+minimagesize=floor(sqrt(2)*15*siftscale(2)+1);
+adaptative=false;
+
 siftdescriptordensity=1;
 Fs=256;
 windowsize=1;
 expcode=2400;
 show=0;
 % =====================================
-
 downsize=16;
 
 % EEG(subject,trial,flash)
@@ -58,6 +67,7 @@ EEG = loadEEG(Fs,windowsize,downsize,120,1:8,1:8);
 
 tic
 Fs=Fs/downsize;
+%qKS=ceil(0.29*Fs*timescale):floor(0.29*Fs*timescale+Fs*timescale/4-1);
 EP=[];CF=[];
 for subject=1:8
     epoch=0;
@@ -126,9 +136,10 @@ for subject=1:8
         [TM, TIX] = BuildDescriptorMatrix(F,channel,labelRange,testRange);
         fprintf('%d\n', size(TM,2));
         
-        DE = NBNNFeatureExtractor(F,channel,trainingRange,labelRange,[1 2]);
+        DE = NBNNFeatureExtractor(F,channel,trainingRange,labelRange,[1 2],false);
         
         iterate=true;
+        balancebags=false;
         while(iterate)
             fprintf('Bag Sizes %d vs %d \n', size(DE.C(1).IX,1),size(DE.C(2).IX,1));
             [ACC, ERR, AUC, SC] = NBNNClassifier(F,DE,channel,testRange,labelRange,false);
@@ -136,24 +147,32 @@ for subject=1:8
             globalaccij1(subject,channel)=1-ERR/size(testRange,2);
             globalaccij2(subject,channel)=AUC;
             
-            adaptative=false;
             iterate=false;
             
             if (adaptative)
-                AnalyzeClassificationDescriptors;
-                
-                if ((size(reinf1,2)>0) || (size(reinf2,2)>0))
+                [reinf1, reinf2] = RetrieveMisleadingDescriptors(F,testRange,SC,DE,TIX);
+
+                if ((balancebags==false))
                     iterate=true;
                     exclude{1}=reinf1;
                     exclude{2}=reinf2;
-                    DE = NBNNIterativeFeatureExtractor(DE,[1 2],exclude);
+
+                    if ((size(reinf1,2)==0) && (size(reinf2,2)==0) )
+                        balancebags=true;
+                    end
+
+                    DE = NBNNIterativeFeatureExtractor(DE,[1 2],exclude,balancebags);
                     
                     assert( size(DE.C(1).IX,1) > 0, 'No more descriptors to prune');
                     assert( size(DE.C(2).IX,1) > 0, 'No more descriptors to prune');
                 else
-                    fprintf('Nothing to update.');
+                    fprintf('Nothing more to update.\n');
                     iterate=false;
                 end
+            else
+                % Just one iteration.  I wonder why matlab do not have do
+                % until.
+                iterate = false;
             end
         end
         SBJ(subject).DE(channel) = DE;
@@ -163,9 +182,10 @@ for subject=1:8
     %SpellerDecoder
     
     %savetemplate(subject,globalaverages,channelRange);
-    save(sprintf('subject.%d.mat', subject));
+    %save(sprintf('subject.%d.mat', subject));
 end
-fdsfds
+
+
 %%
 for subject=1:8
     
@@ -198,7 +218,7 @@ hold off
 
 
 %%
-subject=1;
+subject=3;
 channel=2;
 SC=SBJ(subject).SC(channel);
 ML=SBJ(subject).DE(channel);
@@ -221,5 +241,9 @@ for i=1:30
 end
 
 %%
-totals = DisplayTotals(globalaccij1,globalaccij1,channels)
+fid = fopen('output.txt','a');
+fprintf(fid,'Experiment\n');
+fprintf(fid,'st %f sv %f scale %f timescale %f qKS %d\n',siftscale(1),siftscale(2),imagescale,timescale,qKS);
+totals = DisplayTotals(globalaccij2,globalaccij1,channels)
 totals(:,6)
+fclose(fid)

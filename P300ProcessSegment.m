@@ -56,10 +56,10 @@ end
 
 for i=1:12
 
-    %rmean{i} = zscore(rmean{i})*2; 
+    rmean{i} = zscore(rmean{i})*3; 
     
-    %[n,m]=size(rmean{i});
-    %rmean{i}=rmean{i} - ones(n,1)*mean(rmean{i},1);
+    [n,m]=size(rmean{i});
+    rmean{i}=rmean{i} - ones(n,1)*mean(rmean{i},1);
             
     globalaverages{subject}{trial}{i}.rmean = rmean{i};
     
@@ -70,12 +70,10 @@ for i=1:12
         labelRange(epoch) = label;
         stimRange(epoch) = i;
         for channel=channelRange
-            [eegimg, DOTS, zerolevel] = eegimage(channel,rmean{i},imagescale,timescale, false,200);
+            [eegimg, DOTS, zerolevel] = eegimage(channel,rmean{i},imagescale,timescale, false,minimagesize);
 
             saveeegimage(subject,epoch,label,channel,eegimg);
-
-            qKS=32;
-            qKS=128;
+            zerolevel = size(eegimg,1)/2;
 
             [frames, desc] = PlaceDescriptorsByImage(eegimg, DOTS,siftscale, siftdescriptordensity,qKS,zerolevel);
 
