@@ -10,15 +10,16 @@ close all;
 
 rng(396544);
 
-globalnumberofepochs=10;
+globalnumberofepochspertrial=10;
 globalaverages= cell(2,1);
 globalartifacts = 0;
-globalnumberofsamples=(2+10)*1-1;
+globalreps=10;
+globalnumberofepochs=(2+10)*globalreps-1;
 %for globalnumberofsamples=12*[10:-1:1]-1
 
 clear mex;clearvars  -except global*;close all;clc;
 
-nbofclasses=(2+10)*10;
+nbofclassespertrial=(2+10)*(10/globalreps);
 
 % Clean all the directories where the images are located.
 cleanimagedirectory();
@@ -80,7 +81,7 @@ for subject=1:8
         for flash=1:120
             
             % Process one epoch if the number of flashes has been reached.
-            if (processedflashes>globalnumberofsamples)
+            if (processedflashes>globalnumberofepochs)
                 P300ProcessSegment;
                 processedflashes=0;
             end
@@ -103,7 +104,7 @@ for subject=1:8
             
             hit{stim} = labelh;
             
-            if (rcounter{stim}<globalnumberofepochs)
+            if (rcounter{stim}<globalnumberofepochspertrial)
                 routput{stim} = [routput{stim}; output];
                 rcounter{stim}=rcounter{stim}+1;
             end
@@ -117,8 +118,8 @@ for subject=1:8
     
     %%
     epochRange=1:epoch;
-    trainingRange = 1:nbofclasses*15;
-    testRange=nbofclasses*15+1:min(nbofclasses*35,epoch);
+    trainingRange = 1:nbofclassespertrial*15;
+    testRange=nbofclassespertrial*15+1:min(nbofclassespertrial*35,epoch);
     
     %trainingRange=1:nbofclasses*35;
     
@@ -244,6 +245,6 @@ end
 fid = fopen('output.txt','a');
 fprintf(fid,'Experiment\n');
 fprintf(fid,'st %f sv %f scale %f timescale %f qKS %d\n',siftscale(1),siftscale(2),imagescale,timescale,qKS);
-totals = DisplayTotals(globalaccij2,globalaccij1,channels)
+totals = DisplayTotals(globalaccij1,globalaccij1,channels)
 totals(:,6)
 fclose(fid)
