@@ -13,12 +13,12 @@ rng(396544);
 globalnumberofepochs=10;
 globalaverages= cell(2,1);
 globalartifacts = 0;
-globalnumberofsamples=(2+10)*10-1;
+globalnumberofsamples=(2+10)*1-1;
 %for globalnumberofsamples=12*[10:-1:1]-1
 
 clear mex;clearvars  -except global*;close all;clc;
 
-nbofclasses=(2+10)*1;
+nbofclasses=(2+10)*10;
 
 % Clean all the directories where the images are located.
 cleanimagedirectory();
@@ -47,7 +47,7 @@ qKS=128-13;
 siftscale = [3 3];  % Determines lamda length [ms] and signal amp [microV]
 imagescale=4;    % Para agarrar dos decimales NN.NNNN
 timescale=4;
-qKS=32-5;
+qKS=32-4;
 minimagesize=floor(sqrt(2)*15*siftscale(2)+1);
 adaptative=false;
 
