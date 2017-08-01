@@ -179,31 +179,55 @@ for subject=1:8
         SBJ(subject).DE(channel) = DE;
         SBJ(subject).SC(channel) = SC;
     end
-    
+
+
+    % '2'    'B'    'A'    'C'    'I'    '5'    'R'    'O'    'S'    'E'    'Z'  'U'    'P'    'P'    'A'   
+    % 'G' 'A' 'T' 'T' 'O'    'M' 'E' 'N''T' 'E'   'V''I''O''L''A'  'R''E''B''U''S'
+    Speller = SpellMe(F,channelRange,16:35,labelRange,trainingRange,testRange,SBJ(subject).SC);
+
+    S = 'GATTOMENTEVIOLAREBUS';
+
+    SpAcc = [];
+    for channel=channelRange
+        counter=0;
+        for i=1:size(S,2)
+            if Speller{channel}{i}==S(i)
+                counter=counter+1;
+            end
+        end
+        SpAcc(end+1) = counter/size(S,2);
+    end
+    [a,b] = max(SpAcc)
+
+
     %SpellerDecoder
     
     %savetemplate(subject,globalaverages,channelRange);
     %save(sprintf('subject.%d.mat', subject));
 end
 
-
 %%
 for subject=1:8
-    
+    % '2'    'B'    'A'    'C'    'I'    '5'    'R'    'O'    'S'    'E'    'Z'  'U'    'P'    'P'    'A'   
+    % 'G' 'A' 'T' 'T' 'O'    'M' 'E' 'N''T' 'E'   'V''I''O''L''A'  'R''E''B''U''S'
+    Speller = SpellMe(F,channelRange,16:35,labelRange,trainingRange,testRange,SBJ(subject).SC);
+
+    S = 'GATTOMENTEVIOLAREBUS';
+
+    SpAcc = [];
     for channel=channelRange
-        acce = 0;
-        for i=1:20
-            ri = globalspeller{subject}{channel};
-            if (ri(i,1)==ri(i,5) && ri(i,2)==ri(i,6))
-                acce = acce+1;
+        counter=0;
+        for i=1:size(S,2)
+            if Speller{channel}{i}==S(i)
+                counter=counter+1;
             end
         end
-        globalaccij3(subject,channel)=acce/20;
+        spellingacc = counter/size(S,2);
+        SpAcc(end+1) = spellingacc;
+        globalspeller(subject,channel) = spellingacc;
     end
+    [a,b] = max(SpAcc)
 end
-
-totals = DisplayTotals(globalaccij3,channels)
-totals(:,6)
 
 
 %%
@@ -219,8 +243,8 @@ hold off
 
 
 %%
-subject=3;
-channel=2;
+subject=8;
+channel=7;
 SC=SBJ(subject).SC(channel);
 ML=SBJ(subject).DE(channel);
 F=SBJ(subject).F;
@@ -245,6 +269,6 @@ end
 fid = fopen('output.txt','a');
 fprintf(fid,'Experiment\n');
 fprintf(fid,'st %f sv %f scale %f timescale %f qKS %d\n',siftscale(1),siftscale(2),imagescale,timescale,qKS);
-totals = DisplayTotals(globalaccij1,globalaccij1,channels)
+totals = DisplayTotals(globalspeller,globalaccij1,channels)
 totals(:,6)
 fclose(fid)
