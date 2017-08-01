@@ -137,13 +137,13 @@ for subject=1:8
         [TM, TIX] = BuildDescriptorMatrix(F,channel,labelRange,testRange);
         fprintf('%d\n', size(TM,2));
         
-        DE = NBNNFeatureExtractor(F,channel,trainingRange,labelRange,[1 2],false);
+        DE = NBNNFeatureExtractor(F,channel,trainingRange,labelRange,[1 2],true);
         
         iterate=true;
         balancebags=false;
         while(iterate)
             fprintf('Bag Sizes %d vs %d \n', size(DE.C(1).IX,1),size(DE.C(2).IX,1));
-            [ACC, ERR, AUC, SC] = NBNNClassifier(F,DE,channel,testRange,labelRange,false);
+            [ACC, ERR, AUC, SC] = NBNNClassifier2(F,DE,channel,testRange,labelRange,false);
             P = SC.TN / (SC.TN+SC.FN);
             globalaccij1(subject,channel)=1-ERR/size(testRange,2);
             globalaccij2(subject,channel)=AUC;
@@ -226,20 +226,20 @@ for subject=1:8
         SpAcc(end+1) = spellingacc;
         globalspeller(subject,channel) = spellingacc;
     end
-    [a,b] = max(SpAcc)
+    [a,b] = max(SpAcc);
 end
 
 
 %%
-hold on
-for subject=1:1
-    for trial=1:1
-        for i=1:12
-            plot(globalaverages{subject}{trial}{i}.rmean(:,channel));
-        end
-    end
-end
-hold off
+% hold on
+% for subject=1:1
+%     for trial=1:1
+%         for i=1:12
+%             plot(globalaverages{subject}{trial}{i}.rmean(:,channel));
+%         end
+%     end
+% end
+% hold off
 
 
 %%
