@@ -30,33 +30,33 @@ for f=1:size(testRange,2)/12
     % descriptores de la bolsa de hit y los 12 de este trial.
 
     %Z = dist((TM(:,mind:maxd+6)'),DE.C(2).M);
-    Z = pdist2((TM(:,mind:maxd+6)'),DE.C(2).M','seuclidean');
+    Z = pdist2((TM(:,mind:maxd+6)'),DE.C(2).M','euclidean');
     
     Z=Z';
-
-    K = size(DE.C(2).M,2);
-
-    [Z,I] = pdist2((TM(:,mind:maxd+6)'),DE.C(2).M','seuclidean','Smallest',K);
-    
-    Z=Z';
-    I=I';
-
-    k = 3;
 
     % Para el row, sumo en la primera direccion (along 30) para cada
     % uno.   Tanto para los 6 primeros (fila) como los otros 6
     % (columnas).
 
-    %sumsrow = sum(Z(I(1:k,1:6),1:6),1);
-    %sumscol = sum(Z(I(1:k,7:12),7:12),1);
+    sumsrow = sum(Z(1:size(DE.C(2).M,2),1:6),1);
+    sumscol = sum(Z(1:size(DE.C(2).M,2),7:12),1);
 
-    sumsrow = sum(Z(I(1:k,1:6)),1);
-    sumscol = sum(Z(I(1:k,7:12)),1);
+    K = size(DE.C(2).M,2);
+
+    [Z,I] = pdist2(DE.C(2).M',(TM(:,mind:maxd+6)'),'cosine','Smallest',K);
+    
+    k = 7;
+
+    sumsrow = sum(Z(1:k,1:6),1);
+    sumscol = sum(Z(1:k,7:12),1);
 
     % Me quedo con aquel que la suma contra todos, dio menor.
     [c, row] = min(sumsrow);
     [c, col] = min(sumscol);
     %col=col+6;
+
+% I(1:3,1:6) Me da en cada columna los ids de los descriptores de M mas
+% cercaos a cada uno de los descriptores de 1 a 6.
 
 %SC.CLSF{test}.predicted = DE.C(I(1)).Label;  
 %SC.CLSF{test}.IDX{clster} = IDX; 

@@ -137,7 +137,7 @@ for subject=1:8
         [TM, TIX] = BuildDescriptorMatrix(F,channel,labelRange,testRange);
         fprintf('%d\n', size(TM,2));
         
-        DE = NBNNFeatureExtractor(F,channel,trainingRange,labelRange,[1 2],true);
+        DE = NBNNFeatureExtractor(F,channel,trainingRange,labelRange,[1 2],false);
         
         iterate=true;
         balancebags=false;
@@ -266,9 +266,10 @@ for i=1:30
 end
 
 %%
-fid = fopen('output.txt','a');
-fprintf(fid,'Experiment\n');
+experiment='Comparando usando seuclidean K = 7';
+fid = fopen('experiment.log','a');
+fprintf(fid,'Experiment: %s \n', experiment);
 fprintf(fid,'st %f sv %f scale %f timescale %f qKS %d\n',siftscale(1),siftscale(2),imagescale,timescale,qKS);
-totals = DisplayTotals(globalspeller,globalaccij1,channels)
+totals = DisplayTotals(globalaccij1,globalspeller,channels)
 totals(:,6)
 fclose(fid)

@@ -10,7 +10,7 @@ informedinpaper =   [  0.845
     0.923 ];
 
 totals = [];
-fid = fopen('output.txt','a');
+fid = fopen('experiment.log','a');
 {'Subject','mokuhyou','Cz','Avg','Best Channel','Value','Stdv'}
 for subject=1:8
     [ChAcc,ChNum] = max(globalaccij(subject,:));
