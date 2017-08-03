@@ -30,7 +30,9 @@ for f=1:size(testRange,2)/12
     % descriptores de la bolsa de hit y los 12 de este trial.
 
     %Z = dist((TM(:,mind:maxd+6)'),DE.C(2).M);
-    Z = pdist2((TM(:,mind:maxd+6)'),DE.C(2).M','euclidean');
+    Wgts = ones(1,size(DE.C(2).M,1));
+    weuc = @(XI,XJ,W)(sqrt(bsxfun(@minus,XI,XJ).^2 * W'));
+    Z = pdist2((TM(:,mind:maxd+6)'),DE.C(2).M',@(Xi,Xj) weuc(Xi,Xj,Wgts));
     
     Z=Z';
 
@@ -43,7 +45,7 @@ for f=1:size(testRange,2)/12
 
     K = size(DE.C(2).M,2);
 
-    [Z,I] = pdist2(DE.C(2).M',(TM(:,mind:maxd+6)'),'cosine','Smallest',K);
+    [Z,I] = pdist2(DE.C(2).M',(TM(:,mind:maxd+6)'),'cosine','Smallest',K );
     
     k = 7;
 
@@ -55,11 +57,11 @@ for f=1:size(testRange,2)/12
     [c, col] = min(sumscol);
     %col=col+6;
 
-% I(1:3,1:6) Me da en cada columna los ids de los descriptores de M mas
-% cercaos a cada uno de los descriptores de 1 a 6.
+    % I(1:3,1:6) Me da en cada columna los ids de los descriptores de M mas
+    % cercaos a cada uno de los descriptores de 1 a 6.
 
-%SC.CLSF{test}.predicted = DE.C(I(1)).Label;  
-%SC.CLSF{test}.IDX{clster} = IDX; 
+    %SC.CLSF{test}.predicted = DE.C(I(1)).Label;  
+    %SC.CLSF{test}.IDX{clster} = IDX; 
 
     % Las predicciones son 1 para todos excepto para row y col.
     for i=1:6

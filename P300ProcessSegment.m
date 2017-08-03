@@ -56,7 +56,12 @@ end
 
 for i=1:12
 
-    rmean{i} = zscore(rmean{i})*3; 
+    for c=channelRange
+        rsignal{i}(:,c) = resample(rmean{i}(:,c),size(rmean{i},1)*4,16);
+    end
+
+    rsignal{i} = zscore(rsignal{i})*3; 
+    timescale = 1;
     
     [n,m]=size(rmean{i});
     rmean{i}=rmean{i} - ones(n,1)*mean(rmean{i},1);
@@ -70,7 +75,7 @@ for i=1:12
         labelRange(epoch) = label;
         stimRange(epoch) = i;
         for channel=channelRange
-            [eegimg, DOTS, zerolevel] = eegimage(channel,rmean{i},imagescale,timescale, false,minimagesize);
+            [eegimg, DOTS, zerolevel] = eegimage(channel,rsignal{i},imagescale,timescale, false,minimagesize);
 
             saveeegimage(subject,epoch,label,channel,eegimg);
             zerolevel = size(eegimg,1)/2;

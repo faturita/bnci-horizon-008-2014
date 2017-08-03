@@ -243,8 +243,8 @@ end
 
 
 %%
-subject=8;
-channel=7;
+subject=1;
+channel=2;
 SC=SBJ(subject).SC(channel);
 ML=SBJ(subject).DE(channel);
 F=SBJ(subject).F;
@@ -264,9 +264,26 @@ for i=1:30
     DisplayDescriptorImageFull(F,subject,ML.C(1).IX(i,3),ML.C(1).IX(i,2),ML.C(1).IX(i,1),ML.C(1).IX(i,4),true);
     fcounter=fcounter+1;
 end
+[TM, TIX] = BuildDescriptorMatrix(F,channel,labelRange,find(labelRange(testRange)==2));
+fcounter=1;
+figure('Name','P300 Query','NumberTitle','off');
+setappdata(gcf, 'SubplotDefaultAxesLocation', [0, 0, 1, 1]);
+for i=1:30
+    ah=subplot_tight(6,5,fcounter,[0 0]);
+    DisplayDescriptorImageFull(F,subject,TIX(i,3),TIX(i,2),TIX(i,1),TIX(i,4),true);
+    fcounter=fcounter+1;
+end
+figure('Name','P300 Query (resto)','NumberTitle','off');
+setappdata(gcf, 'SubplotDefaultAxesLocation', [0, 0, 1, 1]);
+fcounter=1;
+for i=30:40
+    ah=subplot_tight(2,5,fcounter,[0 0]);
+    DisplayDescriptorImageFull(F,subject,TIX(i,3),TIX(i,2),TIX(i,1),TIX(i,4),true);
+    fcounter=fcounter+1;
+end
 
 %%
-experiment='Comparando usando seuclidean K = 7';
+experiment='Comparando usando cosine K = 7, upsampling a 16, zscore a 3';
 fid = fopen('experiment.log','a');
 fprintf(fid,'Experiment: %s \n', experiment);
 fprintf(fid,'st %f sv %f scale %f timescale %f qKS %d\n',siftscale(1),siftscale(2),imagescale,timescale,qKS);
