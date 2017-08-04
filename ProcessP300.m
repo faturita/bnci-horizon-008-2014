@@ -283,7 +283,7 @@ for i=30:40
 end
 
 %%
-experiment='Comparando usando cosine K = 7, upsampling a 16, zscore a 3';
+experiment='Comparando usando cosine K = 7, upsampling a 16, zscore a 3, NBNN K=7 pesado';
 fid = fopen('experiment.log','a');
 fprintf(fid,'Experiment: %s \n', experiment);
 fprintf(fid,'st %f sv %f scale %f timescale %f qKS %d\n',siftscale(1),siftscale(2),imagescale,timescale,qKS);

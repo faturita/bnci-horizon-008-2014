@@ -25,23 +25,43 @@ SC.CLSF = {};
 predicted=[];
 score=[];
 
+% W contiene los pesos de los descriptores de la bolsa de hit
+K = size(DE.C(1).M,2);
+
+
+% Obtengo las K distancias de los 30 a los 150.
+[Z,I] = pdist2(DE.C(1).M',DE.C(2).M','cosine','Smallest',K );
+
+k = 1;
+
+% Z es de 150 x 30.  En D guardo las sumas para cada descriptor hit de
+% 1-30 (de las distancias a los K vecinos de cada uno de los descriptores
+% nohits).   D me da entonces una medida de "lo diferente" de cada
+% descriptor de la bolsa de descriptores.
+D = sum(Z(1:k,1:size(DE.C(2).M,2)),1)
+
+ED = sum(D)
+
+Wi = 1.-D/ED;
+
+
 for f=1:size(testRange,2)/12
     % Segundo metodo.  Se calcula la matriz de distancia entre los
     % descriptores de la bolsa de hit y los 12 de este trial.
 
     %Z = dist((TM(:,mind:maxd+6)'),DE.C(2).M);
-    Wgts = ones(1,size(DE.C(2).M,1));
-    weuc = @(XI,XJ,W)(sqrt(bsxfun(@minus,XI,XJ).^2 * W'));
-    Z = pdist2((TM(:,mind:maxd+6)'),DE.C(2).M',@(Xi,Xj) weuc(Xi,Xj,Wgts));
+    %Wgts = ones(1,size(DE.C(2).M,1));
+    %weuc = @(XI,XJ,W)(sqrt(bsxfun(@minus,XI,XJ).^2 * W'));
+    %Z = pdist2((TM(:,mind:maxd+6)'),DE.C(2).M',@(Xi,Xj) weuc(Xi,Xj,Wgts));
     
-    Z=Z';
+    %Z=Z';
 
     % Para el row, sumo en la primera direccion (along 30) para cada
     % uno.   Tanto para los 6 primeros (fila) como los otros 6
     % (columnas).
 
-    sumsrow = sum(Z(1:size(DE.C(2).M,2),1:6),1);
-    sumscol = sum(Z(1:size(DE.C(2).M,2),7:12),1);
+    %sumsrow = sum(Z(1:size(DE.C(2).M,2),1:6),1);
+    %sumscol = sum(Z(1:size(DE.C(2).M,2),7:12),1);
 
     K = size(DE.C(2).M,2);
 
@@ -49,8 +69,11 @@ for f=1:size(testRange,2)/12
     
     k = 7;
 
-    sumsrow = sum(Z(1:k,1:6),1);
-    sumscol = sum(Z(1:k,7:12),1);
+    %sumsrow = sum(Z(1:k,1:6),1);
+    %sumscol = sum(Z(1:k,7:12),1);
+    
+    sumsrow = dot(Z(1:k,1:6),Wi(I(1:k,1:6)));
+    sumscol = dot(Z(1:k,7:12),Wi(I(1:k,7:12)))
 
     % Me quedo con aquel que la suma contra todos, dio menor.
     [c, row] = min(sumsrow);

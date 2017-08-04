@@ -80,6 +80,8 @@ for i=1:12
             saveeegimage(subject,epoch,label,channel,eegimg);
             zerolevel = size(eegimg,1)/2;
 
+            %qKS = GetQKS(rsignal{i},channel,Fs,timescale,qKS)
+
             [frames, desc] = PlaceDescriptorsByImage(eegimg, DOTS,siftscale, siftdescriptordensity,qKS,zerolevel);
 
             desc = single(desc);
