@@ -74,6 +74,7 @@ for i=1:12
         label = hit{i};
         labelRange(epoch) = label;
         stimRange(epoch) = i;
+        DS = [];
         for channel=channelRange
             [eegimg, DOTS, zerolevel] = eegimage(channel,rsignal{i},imagescale,timescale, false,minimagesize);
 
@@ -85,13 +86,14 @@ for i=1:12
             [frames, desc] = PlaceDescriptorsByImage(eegimg, DOTS,siftscale, siftdescriptordensity,qKS,zerolevel);
 
             desc = single(desc);
-
+            desc = (desc/255.0)*2;
+            
             F(channel,label,epoch).hit = hit{i};
             F(channel,label,epoch).descriptors = desc;
             F(channel,label,epoch).frames = frames;   
             F(channel,label,epoch).stim = i;
-             
         end
+        
         EP = [EP; [epoch subject trial 1]];
     end
 end

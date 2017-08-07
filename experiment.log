@@ -224,3 +224,203 @@ st 3.000000 sv 3.000000 scale 4.000000 timescale 1.000000 qKS 28
 6     &   0.89 &   0.88& P3&   0.92 $\pm$ 0.6000 \\
 7     &   0.89 &   0.88& PO8&   0.97 $\pm$ 0.8500 \\
 8     &   0.92 &   0.88& PO7&   0.98 $\pm$ 0.9000 \\
+Experiment: Comparando usando cosine K = 7, upsampling a 16, zscore a 3, NBNN K=7 pesado, concatenando descriptores x canales 
+st 3.000000 sv 3.000000 scale 4.000000 timescale 1.000000 qKS 28
+1     &   0.84 &   0.78& Fz&   0.78 $\pm$ 0.1500 \\
+2     &   0.86 &   0.91& Fz&   0.91 $\pm$ 0.6000 \\
+3     &   0.87 &   0.80& Fz&   0.80 $\pm$ 0.2000 \\
+4     &   0.86 &   0.81& Fz&   0.81 $\pm$ 0.2000 \\
+5     &   0.86 &   0.82& Fz&   0.82 $\pm$ 0.1500 \\
+6     &   0.89 &   0.91& Fz&   0.91 $\pm$ 0.5000 \\
+7     &   0.89 &   0.95& Fz&   0.95 $\pm$ 0.7000 \\
+8     &   0.92 &   0.94& Fz&   0.94 $\pm$ 0.6500 \\
+Experiment: Comparando usando cosine K = 7, upsampling a 16, zscore a 3, NBNN K=7 pesado, concatenando descriptores x canales 
+st 1.500000 sv 3.000000 scale 4.000000 timescale 1.000000 qKS 28
+1     &   0.84 &   0.79& PO8&   0.81 $\pm$ 0.2500 \\
+2     &   0.86 &   0.79& Fz&   0.93 $\pm$ 0.6500 \\
+3     &   0.87 &   0.76& PO8&   0.82 $\pm$ 0.0000 \\
+4     &   0.86 &   0.76& PO8&   0.88 $\pm$ 0.4000 \\
+5     &   0.86 &   0.72& PO8&   0.82 $\pm$ 0.1500 \\
+6     &   0.89 &   0.86& PO7&   0.91 $\pm$ 0.5000 \\
+7     &   0.89 &   0.83& PO7&   0.96 $\pm$ 0.7500 \\
+8     &   0.92 &   0.87& PO7&   0.97 $\pm$ 0.8000 \\
+Experiment: Comparando usando cosine K = 7, upsampling a 16, zscore a 3, NBNN K=7 pesado, concatenando descriptores x canales 
+st 4.000000 sv 4.000000 scale 4.000000 timescale 1.000000 qKS 28
+1     &   0.84 &   0.82& Cz&   0.82 $\pm$ 0.1000 \\
+2     &   0.86 &   0.84& Fz&   0.97 $\pm$ 0.8000 \\
+3     &   0.87 &   0.78& PO8&   0.83 $\pm$ 0.1000 \\
+4     &   0.86 &   0.78& PO8&   0.90 $\pm$ 0.5000 \\
+5     &   0.86 &   0.78& P3&   0.86 $\pm$ 0.3000 \\
+6     &   0.89 &   0.87& Cz&   0.87 $\pm$ 0.3000 \\
+7     &   0.89 &   0.88& PO8&   0.94 $\pm$ 0.7000 \\
+8     &   0.92 &   0.85& PO7&   0.97 $\pm$ 0.8000 \\
+Experiment: Comparando usando cosine K = 7, upsampling a 16, zscore a 3, NBNN K=7 pesado, concatenando descriptores x canales 
+st 3.000000 sv 3.000000 scale 4.000000 timescale 1.000000 qKS 28
+1     &   0.84 &   0.80& Cz&   0.80 $\pm$ 0.2500 \\
+2     &   0.86 &   0.82& Fz&   0.96 $\pm$ 0.8000 \\
+3     &   0.87 &   0.77& PO8&   0.84 $\pm$ 0.1500 \\
+4     &   0.86 &   0.77& PO8&   0.90 $\pm$ 0.5000 \\
+5     &   0.86 &   0.78& Fz&   0.82 $\pm$ 0.2000 \\
+6     &   0.89 &   0.88& P3&   0.92 $\pm$ 0.6000 \\
+7     &   0.89 &   0.88& PO8&   0.97 $\pm$ 0.8500 \\
+8     &   0.92 &   0.88& PO7&   0.98 $\pm$ 0.9000 \\
+Experiment: Comparando usando cosine K = 7, upsampling a 16, zscore a 3, NBNN K=7 pesado, concatenando descriptores x canales 
+st 3.000000 sv 3.000000 scale 4.000000 timescale 1.000000 qKS 28
+1     &   0.84 &   0.80& Cz&   0.80 $\pm$ 0.2500 \\
+2     &   0.86 &   0.82& Fz&   0.96 $\pm$ 0.8000 \\
+3     &   0.87 &   0.77& PO8&   0.84 $\pm$ 0.1500 \\
+4     &   0.86 &   0.77& PO8&   0.90 $\pm$ 0.5000 \\
+5     &   0.86 &   0.78& Fz&   0.82 $\pm$ 0.2000 \\
+6     &   0.89 &   0.88& P3&   0.92 $\pm$ 0.6000 \\
+7     &   0.89 &   0.88& PO8&   0.97 $\pm$ 0.8500 \\
+8     &   0.92 &   0.88& PO7&   0.98 $\pm$ 0.9000 \\
+Experiment: Comparando usando cosine K = 7, upsampling a 16, zscore a 3, NBNN K=7 pesado, concatenando descriptores x canales 
+st 3.000000 sv 3.000000 scale 4.000000 timescale 1.000000 qKS 28
+1     &   0.84 &   0.80& Cz&   0.80 $\pm$ 0.2500 \\
+2     &   0.86 &   0.82& Fz&   0.96 $\pm$ 0.8000 \\
+3     &   0.87 &   0.77& PO8&   0.84 $\pm$ 0.1500 \\
+4     &   0.86 &   0.77& PO8&   0.90 $\pm$ 0.5000 \\
+5     &   0.86 &   0.78& Fz&   0.82 $\pm$ 0.2000 \\
+6     &   0.89 &   0.88& P3&   0.92 $\pm$ 0.6000 \\
+7     &   0.89 &   0.88& PO8&   0.97 $\pm$ 0.8500 \\
+8     &   0.92 &   0.88& PO7&   0.98 $\pm$ 0.9000 \\
+Experiment: Comparando usando cosine K = 7, upsampling a 16, zscore a 3, NBNN K=7 pesado, concatenando descriptores x canales 
+st 3.000000 sv 3.000000 scale 4.000000 timescale 1.000000 qKS 28
+1     &   0.84 &   0.80& Cz&   0.80 $\pm$ 0.2500 \\
+2     &   0.86 &   0.82& Fz&   0.96 $\pm$ 0.8000 \\
+3     &   0.87 &   0.77& PO8&   0.84 $\pm$ 0.1500 \\
+4     &   0.86 &   0.77& PO8&   0.90 $\pm$ 0.5000 \\
+5     &   0.86 &   0.78& Fz&   0.82 $\pm$ 0.2000 \\
+6     &   0.89 &   0.88& P3&   0.92 $\pm$ 0.6000 \\
+7     &   0.89 &   0.88& PO8&   0.97 $\pm$ 0.8500 \\
+8     &   0.92 &   0.88& PO7&   0.98 $\pm$ 0.9000 \\
+Experiment: Comparando usando cosine K = 7, upsampling a 16, zscore a 3, NBNN K=7 pesado Epachenekov 
+st 3.000000 sv 3.000000 scale 4.000000 timescale 1.000000 qKS 28
+1     &   0.84 &   0.80& Cz&   0.80 $\pm$ 0.2500 \\
+2     &   0.86 &   0.82& Fz&   0.96 $\pm$ 0.8000 \\
+3     &   0.87 &   0.77& PO8&   0.84 $\pm$ 0.1500 \\
+4     &   0.86 &   0.77& PO8&   0.90 $\pm$ 0.5000 \\
+5     &   0.86 &   0.77& Fz&   0.82 $\pm$ 0.2000 \\
+6     &   0.89 &   0.88& P3&   0.92 $\pm$ 0.6000 \\
+7     &   0.89 &   0.88& PO8&   0.97 $\pm$ 0.8500 \\
+8     &   0.92 &   0.88& PO7&   0.98 $\pm$ 0.9000 \\
+Experiment: Comparando usando cosine K = 7, upsampling a 16, zscore a 3, NBNN K=7 pesado Epachenekov 
+st 3.000000 sv 3.000000 scale 4.000000 timescale 1.000000 qKS 28
+1     &   0.84 &   0.80& Cz&   0.80 $\pm$ 0.2500 \\
+2     &   0.86 &   0.82& Fz&   0.96 $\pm$ 0.8000 \\
+3     &   0.87 &   0.77& PO8&   0.83 $\pm$ 0.1000 \\
+4     &   0.86 &   0.77& PO8&   0.90 $\pm$ 0.5000 \\
+5     &   0.86 &   0.77& Fz&   0.82 $\pm$ 0.2000 \\
+6     &   0.89 &   0.88& P3&   0.92 $\pm$ 0.6000 \\
+7     &   0.89 &   0.88& PO8&   0.97 $\pm$ 0.8500 \\
+8     &   0.92 &   0.88& PO7&   0.98 $\pm$ 0.9000 \\
+Experiment: Comparando usando cosine K = 7, upsampling a 16, zscore a 3, NBNN K=7 pesado Epachenekov 
+st 3.000000 sv 3.000000 scale 4.000000 timescale 1.000000 qKS 28
+1     &   0.84 &   0.80& Cz&   0.80 $\pm$ 0.2500 \\
+2     &   0.86 &   0.82& Fz&   0.96 $\pm$ 0.8000 \\
+3     &   0.87 &   0.77& PO8&   0.83 $\pm$ 0.1000 \\
+4     &   0.86 &   0.77& PO8&   0.90 $\pm$ 0.5000 \\
+5     &   0.86 &   0.76& Fz&   0.82 $\pm$ 0.2000 \\
+6     &   0.89 &   0.88& P3&   0.92 $\pm$ 0.6000 \\
+7     &   0.89 &   0.88& PO8&   0.97 $\pm$ 0.8500 \\
+8     &   0.92 &   0.88& PO7&   0.98 $\pm$ 0.9000 \\
+Experiment: Comparando usando cosine K = 7, upsampling a 16, zscore a 3, NBNN K=7 pesado Epachenekov 
+st 3.000000 sv 3.000000 scale 4.000000 timescale 1.000000 qKS 28
+1     &   0.84 &   0.80& Cz&   0.80 $\pm$ 0.2500 \\
+2     &   0.86 &   0.82& Fz&   0.96 $\pm$ 0.8000 \\
+3     &   0.87 &   0.77& PO8&   0.84 $\pm$ 0.1500 \\
+4     &   0.86 &   0.77& PO8&   0.90 $\pm$ 0.5000 \\
+5     &   0.86 &   0.77& Fz&   0.82 $\pm$ 0.2000 \\
+6     &   0.89 &   0.88& P3&   0.92 $\pm$ 0.6000 \\
+7     &   0.89 &   0.88& PO8&   0.97 $\pm$ 0.8500 \\
+8     &   0.92 &   0.88& PO7&   0.98 $\pm$ 0.9000 \\
+Experiment: Comparando usando cosine K = 7, upsampling a 16, zscore a 3, NBNN K=7 pesado Epachenekov 
+st 3.000000 sv 3.000000 scale 4.000000 timescale 1.000000 qKS 28
+1     &   0.84 &   0.79& Cz&   0.79 $\pm$ 0.1500 \\
+2     &   0.86 &   0.79& Fz&   0.85 $\pm$ 0.2000 \\
+3     &   0.87 &   0.75& PO7&   0.78 $\pm$ 0.0000 \\
+4     &   0.86 &   0.72& Oz&   0.79 $\pm$ 0.1000 \\
+5     &   0.86 &   0.77& Fz&   0.79 $\pm$ 0.2500 \\
+6     &   0.89 &   0.86& P3&   0.88 $\pm$ 0.4000 \\
+7     &   0.89 &   0.82& Fz&   0.89 $\pm$ 0.5000 \\
+8     &   0.92 &   0.81& PO7&   0.96 $\pm$ 0.7500 \\
+Experiment: Comparando usando cosine K = 7, upsampling a 16, zscore a 3, NBNN K=7 pesado Epachenekov 
+st 3.000000 sv 3.000000 scale 4.000000 timescale 1.000000 qKS 28
+1     &   0.84 &   0.80& Cz&   0.80 $\pm$ 0.2500 \\
+2     &   0.86 &   0.82& Fz&   0.96 $\pm$ 0.8000 \\
+3     &   0.87 &   0.77& PO8&   0.83 $\pm$ 0.1000 \\
+4     &   0.86 &   0.77& PO8&   0.90 $\pm$ 0.5000 \\
+5     &   0.86 &   0.77& Fz&   0.82 $\pm$ 0.2000 \\
+6     &   0.89 &   0.88& P3&   0.92 $\pm$ 0.6000 \\
+7     &   0.89 &   0.88& PO8&   0.97 $\pm$ 0.8500 \\
+8     &   0.92 &   0.88& PO7&   0.98 $\pm$ 0.9000 \\
+Experiment: Comparando usando cosine K = 7, upsampling a 16, zscore a 3, NBNN K=7 con artefactos 
+st 3.000000 sv 3.000000 scale 4.000000 timescale 1.000000 qKS 28
+1     &   0.84 &   0.80& Cz&   0.80 $\pm$ 0.2500 \\
+2     &   0.86 &   0.82& Fz&   0.96 $\pm$ 0.8000 \\
+3     &   0.87 &   0.78& PO8&   0.83 $\pm$ 0.1000 \\
+4     &   0.86 &   0.77& PO8&   0.91 $\pm$ 0.5500 \\
+5     &   0.86 &   0.77& Fz&   0.82 $\pm$ 0.2000 \\
+6     &   0.89 &   0.88& P3&   0.91 $\pm$ 0.5500 \\
+7     &   0.89 &   0.89& PO8&   0.97 $\pm$ 0.8500 \\
+8     &   0.92 &   0.88& PO7&   0.98 $\pm$ 0.9000 \\
+Experiment: Comparando usando minkowski K = 7, upsampling a 16, zscore a 3, NBNN K=7 con artefactos 
+st 3.000000 sv 3.000000 scale 4.000000 timescale 1.000000 qKS 28
+1     &   0.84 &   0.80& PO7&   0.82 $\pm$ 0.2000 \\
+2     &   0.86 &   0.82& Fz&   0.96 $\pm$ 0.8000 \\
+3     &   0.87 &   0.77& PO8&   0.82 $\pm$ 0.0500 \\
+4     &   0.86 &   0.75& PO8&   0.92 $\pm$ 0.5500 \\
+5     &   0.86 &   0.76& PO8&   0.83 $\pm$ 0.2000 \\
+6     &   0.89 &   0.88& P3&   0.91 $\pm$ 0.5500 \\
+7     &   0.89 &   0.89& PO8&   0.97 $\pm$ 0.8500 \\
+8     &   0.92 &   0.89& PO7&   0.98 $\pm$ 0.9000 \\
+Experiment: Comparando usando minkowski K = 7, upsampling a 16, zscore a 3, NBNN K=7 con artefactos 
+st 3.000000 sv 3.000000 scale 4.000000 timescale 1.000000 qKS 28
+1     &   0.84 &   0.78& Cz&   0.78 $\pm$ 0.2000 \\
+2     &   0.86 &   0.82& Fz&   0.91 $\pm$ 0.5000 \\
+3     &   0.87 &   0.78& PO8&   0.84 $\pm$ 0.1500 \\
+4     &   0.86 &   0.75& PO8&   0.90 $\pm$ 0.4500 \\
+5     &   0.86 &   0.79& P3&   0.84 $\pm$ 0.2000 \\
+6     &   0.89 &   0.91& Cz&   0.91 $\pm$ 0.4500 \\
+7     &   0.89 &   0.88& PO8&   0.95 $\pm$ 0.7000 \\
+8     &   0.92 &   0.87& Oz&   0.99 $\pm$ 0.9500 \\
+Experiment: Comparando usando minkowski K = 7, upsampling a 16, zscore a 3, NBNN K=7 con artefactos, euclidean 
+st 3.000000 sv 3.000000 scale 4.000000 timescale 1.000000 qKS 28
+1     &   0.84 &   0.80& PO7&   0.82 $\pm$ 0.2000 \\
+2     &   0.86 &   0.82& Fz&   0.96 $\pm$ 0.8000 \\
+3     &   0.87 &   0.77& PO8&   0.82 $\pm$ 0.0500 \\
+4     &   0.86 &   0.75& PO8&   0.92 $\pm$ 0.5500 \\
+5     &   0.86 &   0.76& PO8&   0.83 $\pm$ 0.2000 \\
+6     &   0.89 &   0.88& P3&   0.91 $\pm$ 0.5500 \\
+7     &   0.89 &   0.89& PO8&   0.97 $\pm$ 0.8500 \\
+8     &   0.92 &   0.89& PO7&   0.98 $\pm$ 0.9000 \\
+Experiment: Comparando usando minkowski K = 7, upsampling a 16, zscore a 3, NBNN K=7 con artefactos, cosine 
+st 3.000000 sv 3.000000 scale 4.000000 timescale 1.000000 qKS 28
+1     &   0.84 &   0.80& Cz&   0.80 $\pm$ 0.2500 \\
+2     &   0.86 &   0.82& Fz&   0.96 $\pm$ 0.8000 \\
+3     &   0.87 &   0.78& PO8&   0.83 $\pm$ 0.1000 \\
+4     &   0.86 &   0.77& PO8&   0.91 $\pm$ 0.5500 \\
+5     &   0.86 &   0.76& Fz&   0.82 $\pm$ 0.2000 \\
+6     &   0.89 &   0.88& P3&   0.91 $\pm$ 0.5500 \\
+7     &   0.89 &   0.89& PO8&   0.97 $\pm$ 0.8500 \\
+8     &   0.92 &   0.88& PO7&   0.98 $\pm$ 0.9000 \\
+Experiment: Comparando usando minkowski K = 7, upsampling a 16, zscore a 3, NBNN K=7 con artefactos, cosine, [0-1] 
+st 3.000000 sv 3.000000 scale 4.000000 timescale 1.000000 qKS 28
+1     &   0.84 &   0.80& Cz&   0.80 $\pm$ 0.2500 \\
+2     &   0.86 &   0.82& Fz&   0.96 $\pm$ 0.8000 \\
+3     &   0.87 &   0.78& PO8&   0.83 $\pm$ 0.1000 \\
+4     &   0.86 &   0.77& PO8&   0.91 $\pm$ 0.5500 \\
+5     &   0.86 &   0.76& Fz&   0.82 $\pm$ 0.2000 \\
+6     &   0.89 &   0.88& P3&   0.91 $\pm$ 0.5500 \\
+7     &   0.89 &   0.89& PO8&   0.97 $\pm$ 0.8500 \\
+8     &   0.92 &   0.88& PO7&   0.98 $\pm$ 0.9000 \\
+Experiment: Comparando usando K = 7, upsampling a 16, zscore a 3, NBNN K=7 con artefactos, cosine, [0-1] 
+st 3.000000 sv 3.000000 scale 4.000000 timescale 1.000000 qKS 28
+1     &   0.84 &   0.68& Pz&   0.73 $\pm$ 0.0500 \\
+2     &   0.86 &   0.69& Pz&   0.72 $\pm$ 0.0500 \\
+3     &   0.87 &   0.70& Oz&   0.77 $\pm$ 0.1500 \\
+4     &   0.86 &   0.73& Pz&   0.77 $\pm$ 0.1500 \\
+5     &   0.86 &   0.70& Oz&   0.74 $\pm$ 0.0500 \\
+6     &   0.89 &   0.72& P4&   0.74 $\pm$ 0.0000 \\
+7     &   0.89 &   0.70& Pz&   0.72 $\pm$ 0.0000 \\
+8     &   0.92 &   0.72& Fz&   0.73 $\pm$ 0.0000 \\
