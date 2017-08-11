@@ -32,10 +32,11 @@ cleanimagedirectory();
 
 %     'Fz'    'Cz'    'Pz'    'Oz'    'P3'    'P4'    'PO7'    'PO8'
 
-channels={ 'Fz'  ,  'Cz',    'Pz' ,   'Oz'  ,  'P3'  ,  'P4'   , 'PO7'   , 'PO8'};
+channels={ 'Fz '  ,  'Cz ',    'Pz ' ,   'Oz '  ,  'P3 '  ,  'P4 '   , 'PO7'   , 'PO8'};
 
 
 % Parameters ==========================
+subjectRange=1:8;
 epochRange = 1:120*7*5;
 channelRange=1:8;
 labelRange = [];
@@ -48,7 +49,7 @@ qKS=128-13;
 siftscale = [3 3];  % Determines lamda length [ms] and signal amp [microV]
 imagescale=4;    % Para agarrar dos decimales NN.NNNN
 timescale=4;
-qKS=32-4;
+qKS=32-3;
 minimagesize=floor(sqrt(2)*15*siftscale(2)+1);
 adaptative=false;
 
@@ -60,6 +61,7 @@ show=0;
 % =====================================
 downsize=16;
 
+
 % EEG(subject,trial,flash)
 EEG = loadEEG(Fs,windowsize,downsize,120,1:8,1:8);
 
@@ -70,7 +72,7 @@ tic
 Fs=Fs/downsize;
 %qKS=ceil(0.29*Fs*timescale):floor(0.29*Fs*timescale+Fs*timescale/4-1);
 EP=[];CF=[];
-for subject=1:8
+for subject=subjectRange
     epoch=0;
     for trial=1:35
         for i=1:12 routput{i}=[]; end
@@ -143,7 +145,9 @@ for subject=1:8
         balancebags=false;
         while(iterate)
             fprintf('Bag Sizes %d vs %d \n', size(DE.C(1).IX,1),size(DE.C(2).IX,1));
-            [ACC, ERR, AUC, SC] = NBNNClassifier2(F,DE,channel,testRange,labelRange,false);
+            %[ACC, ERR, AUC, SC] = LDAClassifier(F,DE,channel,testRange,labelRange,false);
+            [ACC, ERR, AUC, SC] = NBNNClassifier3(F,DE,channel,testRange,labelRange,false);
+            %[ACC, ERR, AUC, SC] = NNetClassifier(F,DE,labelRange,trainingRange,testRange,channel)
             P = SC.TN / (SC.TN+SC.FN);
             globalaccij1(subject,channel)=1-ERR/size(testRange,2);
             globalaccij2(subject,channel)=AUC;
@@ -207,13 +211,14 @@ for subject=1:8
 end
 
 %%
-for subject=1:8
+for subject=subjectRange
     % '2'    'B'    'A'    'C'    'I'    '5'    'R'    'O'    'S'    'E'    'Z'  'U'    'P'    'P'    'A'   
     % 'G' 'A' 'T' 'T' 'O'    'M' 'E' 'N''T' 'E'   'V''I''O''L''A'  'R''E''B''U''S'
-    Speller = SpellMe(F,channelRange,16:35,labelRange,trainingRange,testRange,SBJ(subject).SC);
+    Speller = SpellMe(F,channelRange,16*12/nbofclassespertrial:35*12/nbofclassespertrial,labelRange,trainingRange,testRange,SBJ(subject).SC);
 
     S = 'GATTOMENTEVIOLAREBUS';
-
+    S = repmat(S,12/nbofclassespertrial);
+    
     SpAcc = [];
     for channel=channelRange
         counter=0;
@@ -243,8 +248,8 @@ end
 
 
 %%
-subject=2;
-channel=8;
+subject=1;
+channel=7;
 SC=SBJ(subject).SC(channel);
 ML=SBJ(subject).DE(channel);
 F=SBJ(subject).F;
@@ -264,7 +269,7 @@ for i=1:30
     DisplayDescriptorImageFull(F,subject,ML.C(1).IX(i,3),ML.C(1).IX(i,2),ML.C(1).IX(i,1),ML.C(1).IX(i,4),true);
     fcounter=fcounter+1;
 end
-[TM, TIX] = BuildDescriptorMatrix(F,channel,labelRange,find(labelRange(testRange)==1));
+[TM, TIX] = BuildDescriptorMatrix(F,channel,labelRange,testRange(labelRange(testRange)==2));
 fcounter=1;
 figure('Name','P300 Query','NumberTitle','off');
 setappdata(gcf, 'SubplotDefaultAxesLocation', [0, 0, 1, 1]);
@@ -283,10 +288,10 @@ for i=30:40
 end
 
 %%
-experiment='Comparando usando K = 7, upsampling a 16, zscore a 3, NBNN K=7 con artefactos, cosine, [0-1]';
+experiment='Butter de 3 a 4, K = 7, upsampling a 16, zscore a 3, NBNN con artefactos, normalized float Hellinger';
 fid = fopen('experiment.log','a');
 fprintf(fid,'Experiment: %s \n', experiment);
 fprintf(fid,'st %f sv %f scale %f timescale %f qKS %d\n',siftscale(1),siftscale(2),imagescale,timescale,qKS);
-totals = DisplayTotals(globalaccij1,globalspeller,channels)
+totals = DisplayTotals(subjectRange,globalaccij1,globalspeller,globalaccij2,globalspeller,channels)
 totals(:,6)
 fclose(fid)

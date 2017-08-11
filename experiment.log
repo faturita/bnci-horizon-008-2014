@@ -424,3 +424,72 @@ st 3.000000 sv 3.000000 scale 4.000000 timescale 1.000000 qKS 28
 6     &   0.89 &   0.72& P4&   0.74 $\pm$ 0.0000 \\
 7     &   0.89 &   0.70& Pz&   0.72 $\pm$ 0.0000 \\
 8     &   0.92 &   0.72& Fz&   0.73 $\pm$ 0.0000 \\
+Experiment: Butter de 3 a 4, K = 7, upsampling a 16, zscore a 3, NBNN K=7 con artefactos, cosine, [0-1] Epanechnikov 
+st 3.000000 sv 3.000000 scale 4.000000 timescale 1.000000 qKS 29
+1     &   0.84 &   0.78& Cz&   0.20 $\pm$ 0.2000 \\
+2     &   0.86 &   0.81& Fz&   0.80 $\pm$ 0.8000 \\
+3     &   0.87 &   0.78& PO8&   0.20 $\pm$ 0.2000 \\
+4     &   0.86 &   0.82& PO8&   0.55 $\pm$ 0.5500 \\
+5     &   0.86 &   0.77& Fz&   0.25 $\pm$ 0.2500 \\
+6     &   0.89 &   0.88& P3&   0.55 $\pm$ 0.5500 \\
+7     &   0.89 &   0.88& PO8&   0.80 $\pm$ 0.8000 \\
+8     &   0.92 &   0.85& PO7&   0.90 $\pm$ 0.9000 \\
+Experiment: Butter de 3 a 4, K = 7, upsampling a 16, zscore a 3, NBNN K=7 con artefactos, cosine, [0-1] Epanechnikov 
+st 3.000000 sv 3.000000 scale 4.000000 timescale 1.000000 qKS 29
+1     &   0.84 &   0.77& Cz&   0.20 $\pm$ 0.2000 \\
+2     &   0.86 &   0.81& Fz&   0.80 $\pm$ 0.8000 \\
+3     &   0.87 &   0.78& PO8&   0.20 $\pm$ 0.2000 \\
+4     &   0.86 &   0.82& PO8&   0.55 $\pm$ 0.5500 \\
+5     &   0.86 &   0.77& Fz&   0.25 $\pm$ 0.2500 \\
+6     &   0.89 &   0.88& P3&   0.55 $\pm$ 0.5500 \\
+7     &   0.89 &   0.88& PO8&   0.80 $\pm$ 0.8000 \\
+8     &   0.92 &   0.86& PO7&   0.90 $\pm$ 0.9000 \\
+Experiment: Butter de 3 a 4, K = 7, upsampling a 16, zscore a 3, NBNN K=7 con artefactos, cosine, [0-1] Epanechnikov 
+st 3.000000 sv 3.000000 scale 4.000000 timescale 1.000000 qKS 29
+1     &   0.84 &   0.78& Cz&   0.15 $\pm$ 0.1500 \\
+2     &   0.86 &   0.73& Fz&   0.70 $\pm$ 0.7000 \\
+3     &   0.87 &   0.78& Cz&   0.20 $\pm$ 0.2000 \\
+4     &   0.86 &   0.78& PO8&   0.35 $\pm$ 0.3500 \\
+5     &   0.86 &   0.76& P3&   0.20 $\pm$ 0.2000 \\
+6     &   0.89 &   0.83& PO7&   0.55 $\pm$ 0.5500 \\
+7     &   0.89 &   0.85& Fz&   0.65 $\pm$ 0.6500 \\
+8     &   0.92 &   0.83& PO8&   0.70 $\pm$ 0.7000 \\
+Experiment: Butter de 3 a 4, K = 7, upsampling a 16, zscore a 3, NBNN K=7 con artefactos, cosine, [0-1] Epanechnikov 
+st 3.000000 sv 3.000000 scale 4.000000 timescale 1.000000 qKS 29
+1     &   0.84 &   0.78& Cz&   0.20 $\pm$ 0.2000 \\
+2     &   0.86 &   0.81& Fz&   0.80 $\pm$ 0.8000 \\
+3     &   0.87 &   0.78& PO8&   0.25 $\pm$ 0.2500 \\
+4     &   0.86 &   0.81& PO8&   0.50 $\pm$ 0.5000 \\
+5     &   0.86 &   0.77& Fz&   0.30 $\pm$ 0.3000 \\
+6     &   0.89 &   0.88& P3&   0.55 $\pm$ 0.5500 \\
+7     &   0.89 &   0.88& PO8&   0.80 $\pm$ 0.8000 \\
+8     &   0.92 &   0.88& PO7&   0.90 $\pm$ 0.9000 \\
+Experiment: Butter de 3 a 4, K = 7, upsampling a 16, zscore a 3, NNET con artefactos, cosine, [0-1] Epanechnikov 
+st 3.000000 sv 3.000000 scale 4.000000 timescale 1.000000 qKS 29
+1     &   0.84 &   0.82& Cz & 0.0500 $\pm$ 0.0500 \\
+2     &   0.86 &   0.82& Fz & 0.3500 $\pm$ 0.3500 \\
+3     &   0.87 &   0.81& P4 & 0.0500 $\pm$ 0.0500 \\
+4     &   0.86 &   0.80& PO8& 0.3000 $\pm$ 0.3000 \\
+5     &   0.86 &   0.86& Cz & 0.2500 $\pm$ 0.2500 \\
+6     &   0.89 &   0.88& Cz & 0.3000 $\pm$ 0.3000 \\
+7     &   0.89 &   0.85& PO8& 0.4500 $\pm$ 0.4500 \\
+8     &   0.92 &   0.85& PO8& 0.7500 $\pm$ 0.7500 \\
+Experiment: Butter de 3 a 4, K = 7, upsampling a 16, zscore a 3, NNET con artefactos, cosine, [0-1] Epanechnikov 
+st 3.000000 sv 3.000000 scale 4.000000 timescale 1.000000 qKS 29
+1     &   0.84 &   0.78& Cz & 0.2000 $\pm$ 0.2000 \\
+Experiment: Butter de 3 a 4, K = 7, upsampling a 16, zscore a 3, NNET con artefactos, cosine, [0-1] Epanechnikov 
+st 3.000000 sv 3.000000 scale 4.000000 timescale 1.000000 qKS 29
+1     &   0.84 &   0.78& Cz & 0.2000 $\pm$ 0.2000 \\
+Experiment: Butter de 3 a 4, K = 7, upsampling a 16, zscore a 3, NNET con artefactos, cosine, [0-1] Epanechnikov 
+st 3.000000 sv 3.000000 scale 4.000000 timescale 1.000000 qKS 29
+1     &   0.84 &   0.82& Fz & 0.0500 $\pm$ 0.0500 \\
+Experiment: Butter de 3 a 4, K = 7, upsampling a 16, zscore a 3, NBNN con artefactos, normalized float Hellinger 
+st 3.000000 sv 3.000000 scale 4.000000 timescale 1.000000 qKS 29
+1     &   0.84 &   0.78& PO7& 0.2000 $\pm$ 0.2000 \\
+2     &   0.86 &   0.80& Fz & 0.8000 $\pm$ 0.8000 \\
+3     &   0.87 &   0.78& Cz & 0.2000 $\pm$ 0.2000 \\
+4     &   0.86 &   0.78& PO8& 0.4000 $\pm$ 0.4000 \\
+5     &   0.86 &   0.76& Fz & 0.2500 $\pm$ 0.2500 \\
+6     &   0.89 &   0.85& PO8& 0.5500 $\pm$ 0.5500 \\
+7     &   0.89 &   0.87& PO8& 0.7500 $\pm$ 0.7500 \\
+8     &   0.92 &   0.87& PO7& 0.9000 $\pm$ 0.9000 \\

@@ -17,44 +17,58 @@ CF = [CF;A];
 
 h = [];
 
+
 for i=1:12
     channelRange = (1:size(routput{i},2));
     channelsize = size(channelRange,2);
         
     assert( size(routput{i},1)/Fs == rcounter{i}, 'Something wrong with PtP average. Sizes do not match.');
     
-    routput{i}=reshape(routput{i},[Fs size(routput{i},1)/Fs channelsize]); 
+    routput{i}=reshape(routput{i},[Fs size(routput{i},1)/Fs channelsize]);
+end
 
-    for channel=channelRange
-        rmean{i}(:,channel) = mean(routput{i}(:,:,channel),2);
+for i=1:36 loutput{i}=[];end
+for i=1:36 lhit{i}=0;end
+
+for k=1:rcounter{1}  
+    for s=1:6
+        for p=1:6
+            loutput{(s-1)*6+p} = [loutput{(s-1)*6+p}; routput{s}(:,k,:)];
+            loutput{(s-1)*6+p} = [loutput{(s-1)*6+p}; routput{6+p}(:,k,:)];
+        end
     end
+end
 
+for s=1:6
+    for p=1:6
+        if (hit{s}==2 && hit{6+p}==2)
+            lhit{(s-1)*6+p} = 2;
+        else
+            lhit{(s-1)*6+p} = 1;
+        end
+    end
+end
+
+for i=1:12
     routput{i}=[]; 
     rcounter{i}=0;
     
     if (hit{i} == 2)
         h = [h i];
-    end
-    
+    end    
 end
 
-% Inject signals to rebalance the dataset.
-rebalancedataset=false;
-if (rebalancedataset)
+for i=1:36
+    loutput{i}=reshape(loutput{i},[Fs size(loutput{i},1)/Fs channelsize]);
+end
+  
+for i=1:36
     for channel=channelRange
-
-        hitsignals = smoteeeg(rmean{h(1)},rmean{h(2)},Fs,8);
-
-        for i=13:20
-            rmean{i}(:,channel) = hitsignals(:,i-12);
-            hit{i} = 2;
-        end
-
+        rmean{i}(:,channel) = mean(loutput{i}(:,:,channel),2);
     end
 end
 
-
-for i=1:12
+for i=1:36
 
     for c=channelRange
         rsignal{i}(:,c) = resample(rmean{i}(:,c),size(rmean{i},1)*4,16);
@@ -68,10 +82,10 @@ for i=1:12
             
     globalaverages{subject}{trial}{i}.rmean = rsignal{i};
     
-    if ( (hit{i} == 2 && hitcounter{2}<20) || (hit{i}==1 && hitcounter{1}<20) )
-        hitcounter{hit{i}}=hitcounter{hit{i}}+1;
+    if ( (lhit{i} == 2 && hitcounter{2}<=20) || (lhit{i}==1 && hitcounter{1}<=20) )
+        hitcounter{lhit{i}}=hitcounter{lhit{i}}+1;
         epoch=epoch+1;    
-        label = hit{i};
+        label = lhit{i};
         labelRange(epoch) = label;
         stimRange(epoch) = i;
         DS = [];
@@ -85,7 +99,7 @@ for i=1:12
 
             [frames, desc] = PlaceDescriptorsByImage(eegimg, DOTS,siftscale, siftdescriptordensity,qKS,zerolevel);
 
-            F(channel,label,epoch).hit = hit{i};
+            F(channel,label,epoch).hit = lhit{i};
             F(channel,label,epoch).descriptors = desc;
             F(channel,label,epoch).frames = frames;   
             F(channel,label,epoch).stim = i;
@@ -94,5 +108,3 @@ for i=1:12
         EP = [EP; [epoch subject trial 1]];
     end
 end
-
-            

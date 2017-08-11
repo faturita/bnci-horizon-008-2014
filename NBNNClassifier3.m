@@ -1,4 +1,4 @@
-function [ACC, ERR, AUC, SC] = NBNNClassifier2(F,DE,channel,testRange,labelRange,graphics)
+function [ACC, ERR, AUC, SC] = NBNNClassifier3(F,DE,channel,testRange,labelRange,graphics)
 
 fprintf('Channel %d\n', channel);
 fprintf('Building Test Matrix M for Channel %d:', channel);
@@ -32,7 +32,7 @@ K = size(DE.C(1).M,2);
 % Obtengo las K distancias de los 30 a los 150.
 [Z,I] = pdist2(DE.C(1).M',DE.C(2).M','euclidean','Smallest',K );
 
-k = K;
+k = 1;
 
 % Z es de 150 x 30.  En D guardo las sumas para cada descriptor hit de
 % 1-30 (de las distancias a los K vecinos de cada uno de los descriptores
@@ -66,20 +66,14 @@ for f=1:size(testRange,2)/12
 
     K = size(DE.C(2).M,2);
 
-    [Z,I] = pdist2(DE.C(2).M',(TM(:,mind:maxd+6)'),'euclidean','Smallest',K );
+    [Z,I] = pdist2(DE.C(2).M',(TM(:,mind:maxd+6)'),'cosine','Smallest',K );
     
     k = 7;
 
     %sumsrow = sum(Z(1:k,1:6),1);
     %sumscol = sum(Z(1:k,7:12),1);
     
-    %Wi = Epanechnikov(D(I(1:k,1:6))) ./ repmat(sum( Epanechnikov(D(I(1:k,1:6))) ),k,1) ;
-    
-    assert( k > 1, 'error');
-    
-    Wi = 1.-D(I(1:k,1:6))  ./   repmat  (   sum(D(I(1:k,1:6))),k,1  ) ;
-    Wi = Wi / (k-1);
-    
+    Wi = Epanechnikov(D(I(1:k,1:6))) ./ repmat(sum( Epanechnikov(D(I(1:k,1:6))) ),k,1) ;
     
     %sumsrow = dot(Z(1:k,1:6),Wi(I(1:k,1:6)));
     
@@ -87,9 +81,8 @@ for f=1:size(testRange,2)/12
     
     %sumscol = dot(Z(1:k,7:12),Wi(I(1:k,7:12)));
     
-    Wi = 1.-D(I(1:k,7:12))  ./   repmat  (   sum(D(I(1:k,7:12))),k,1  ) ;
-    Wi = Wi / (k-1);
-    
+    Wi = Epanechnikov(D(I(1:k,1:6))) ./ repmat(sum( Epanechnikov(D(I(1:k,1:6))) ),k,1) ;
+     
     sumscol = dot(Z(1:k,7:12),Wi(1:k,1:6));
 
     % Me quedo con aquel que la suma contra todos, dio menor.
@@ -169,8 +162,6 @@ end
 
 function E = Epanechnikov(t)
 
-E = 3/4 * (1 - (abs(t) <= 1).^2 );
-
+E = 3/4 .* t .* (2 - t);
 
 end
-

@@ -1,4 +1,4 @@
-function totals = DisplayTotals(globalaccij,globalsigmaaccij1,channels)
+function totals = DisplayTotals(subjectRange,globalaccij,globalsigmaaccij,globalauc,globalspeller,channels)
 
 informedinpaper =   [  0.845  
     0.863    
@@ -12,9 +12,9 @@ informedinpaper =   [  0.845
 totals = [];
 fid = fopen('experiment.log','a');
 {'Subject','mokuhyou','Cz','Avg','Best Channel','Value','Stdv'}
-for subject=1:8
-    [ChAcc,ChNum] = max(globalaccij(subject,:));
-    Stdv = globalsigmaaccij1(subject,ChNum);
+for subject=subjectRange
+    [ChAcc,ChNum] = max(globalspeller(subject,:));
+    Stdv = globalsigmaaccij(subject,ChNum);
     
     CMean = mean(globalaccij(subject,:));
     
@@ -25,7 +25,7 @@ for subject=1:8
     
     fprintf(fid,'%d     & %6.2f & %6.2f', [ subject informedinpaper(subject) Cz]);
     fprintf(fid,'& %s', channels{ChNum});
-    fprintf(fid,'& %6.2f $\\pm$ %4.4f \\\\\n', [ChAcc Stdv]);
+    fprintf(fid,'& %6.4f $\\pm$ %4.4f \\\\\n', [ChAcc Stdv]);
 end
 totals
 fclose(fid);

@@ -14,7 +14,8 @@ for subject=subjectRange
     dataX = notchsignal(data.X, channelRange);
     datatrial = data.trial;
 
-    %data.X = decimateaveraging(data.X,channelRange,downsize);
+    
+    %dataX = decimateaveraging(dataX,channelRange,downsize);
     dataX = bandpasseeg(dataX, channelRange,Fs);
     dataX = decimatesignal(dataX,channelRange,downsize); 
     %dataX = downsample(dataX,downsize);

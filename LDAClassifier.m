@@ -1,4 +1,4 @@
-function [ACC, ERR, AUC, SC] = NBNNClassifier2(F,DE,channel,testRange,labelRange,graphics)
+function [ACC, ERR, AUC, SC] = LDAClassifier(F,DE,channel,testRange,labelRange)
 
 fprintf('Channel %d\n', channel);
 fprintf('Building Test Matrix M for Channel %d:', channel);
@@ -25,26 +25,16 @@ SC.CLSF = {};
 predicted=[];
 score=[];
 
-% W contiene los pesos de los descriptores de la bolsa de hit
-K = size(DE.C(1).M,2);
+M = [DE.C(1).M DE.C(2).M ];
+IX = [DE.C(1).IX ;DE.C(2).IX ];
 
+W = LDA( M', IX(:,2)');
 
-% Obtengo las K distancias de los 30 a los 150.
-[Z,I] = pdist2(DE.C(1).M',DE.C(2).M','euclidean','Smallest',K );
+L = [M; ones(1,180)]' * W';
+%W = LDA( TM', TIX(:,2)');
 
-k = K;
-
-% Z es de 150 x 30.  En D guardo las sumas para cada descriptor hit de
-% 1-30 (de las distancias a los K vecinos de cada uno de los descriptores
-% nohits).   D me da entonces una medida de "lo diferente" de cada
-% descriptor de la bolsa de descriptores.
-D = sum(Z(1:k,1:size(DE.C(2).M,2)),1);
-
-%ED = sum( Epanechnikov(D) );
-
-%Wi = (1.-D/ED)/(30-1);
-%Wi = Epanechnikov(D) / ED;
-
+P = exp(L) ./ repmat(sum(exp(L),2),[1 2]);
+P
 
 for f=1:size(testRange,2)/12
     % Segundo metodo.  Se calcula la matriz de distancia entre los
@@ -164,13 +154,6 @@ SC.TN = C(1,1);
 
 SC.expected = expected;
 SC.predicted = predicted;    
-
-end
-
-function E = Epanechnikov(t)
-
-E = 3/4 * (1 - (abs(t) <= 1).^2 );
-
 
 end
 
