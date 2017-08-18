@@ -53,11 +53,11 @@ if (rebalancedataset)
     end
 end
 
-% if ((size(find(trainingRange==epoch+1),2)==0))
-%    for c=channelRange
-%        DEKZ(c) = NBNNFeatureExtractor(F,c,trainingRange,labelRange,[1 2],false);
-%    end
-% end
+if ((size(find(trainingRange==epoch+1),2)==0))
+   for c=channelRange
+       DEKZ(c) = NBNNFeatureExtractor(F,c,trainingRange,labelRange,[1 2],false);
+   end
+end
 
 
 for i=1:12
@@ -87,33 +87,33 @@ for i=1:12
             saveeegimage(subject,epoch,label,channel,eegimg);
             zerolevel = size(eegimg,1)/2;
 
-%             if ((size(find(trainingRange==epoch),2)==0))
-%                qKS=ceil(0.20*(Fs)*timescale):floor(0.20*(Fs)*timescale+(Fs)*timescale/4-1);
-%             else
-                qKS=sqKS(subject);
-%             end
+            if ((size(find(trainingRange==epoch),2)==0))
+               qKS=ceil(0.20*(Fs)*timescale):floor(0.20*(Fs)*timescale+(Fs)*timescale/4-1);
+            else
+               qKS=32-3;
+            end
 
             [frames, desc] = PlaceDescriptorsByImage(eegimg, DOTS,siftscale, siftdescriptordensity,qKS,zerolevel);
 
             F(channel,label,epoch).stim = i;
             F(channel,label,epoch).hit = hit{i};
             
-%             if ((size(find(trainingRange==epoch),2)==0))
-%                 
-%                 DKE = DEKZ(c);
-%                 
-%                 Z= pdist2(DKE.C(2).M(:,:)',desc','cosine');
-%                 
-%                 sumsrow = dot(Z(1:size(DKE.C(2).M,2),1:size(desc,2)),ones(size(DKE.C(2).M,2),size(desc,2)));
-%         
-%                 [mval, minx] = min(sumsrow);
-%                 
-%                 F(channel,label,epoch).descriptors = desc(:,minx);
-%                 F(channel,label,epoch).frames = frames(:,minx);   
-%             else
-                 F(channel,label,epoch).descriptors = desc;
-                 F(channel,label,epoch).frames = frames;   
-%             end
+            if ((size(find(trainingRange==epoch),2)==0))
+                
+                DKE = DEKZ(c);
+                
+                Z= pdist2(DKE.C(2).M(:,:)',desc','cosine');
+                
+                sumsrow = dot(Z(1:size(DKE.C(2).M,2),1:size(desc,2)),ones(size(DKE.C(2).M,2),size(desc,2)));
+        
+                [mval, minx] = min(sumsrow);
+                
+                F(channel,label,epoch).descriptors = desc(:,minx);
+                F(channel,label,epoch).frames = frames(:,minx);   
+            else
+                F(channel,label,epoch).descriptors = desc;
+                F(channel,label,epoch).frames = frames;   
+            end
             
         end
         

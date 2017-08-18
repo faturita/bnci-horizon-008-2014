@@ -66,7 +66,7 @@ for f=1:size(testRange,2)/12
 
     K = size(DE.C(2).M,2);
 
-    [Z,I] = pdist2(DE.C(2).M',(TM(:,mind:maxd+6)'),'cosine','Smallest',K );
+    [Z,I] = pdist2(DE.C(2).M',(TM(:,mind:maxd+6)'),'euclidean','Smallest',K );
     
     k = 7;
 

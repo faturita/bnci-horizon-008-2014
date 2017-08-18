@@ -5,8 +5,8 @@
 % run('C:/vlfeat/toolbox/vl_setup')
 % P300 for ALS patients.
 
-clear all;
-close all;
+%clear all;
+%close all;
 
 rng(396544);
 
@@ -51,6 +51,7 @@ imagescale=4;    % Para agarrar dos decimales NN.NNNN
 timescale=4;
 qKS=32-3;
 minimagesize=floor(sqrt(2)*15*siftscale(2)+1);
+amplitude=3;
 adaptative=false;
 
 siftdescriptordensity=1;
@@ -68,12 +69,18 @@ EEG = loadEEG(Fs,windowsize,downsize,120,1:8,1:8);
 % CONTROL
 %EEG = randomizeEEG(EEG);
 
+trainingRange = 1:nbofclassespertrial*15;
+
+
 tic
 Fs=Fs/downsize;
-%qKS=ceil(0.29*Fs*timescale):floor(0.29*Fs*timescale+Fs*timescale/4-1);
+
+sqKS = [37; 19; 37; 38; 33; 35; 35; 37];
+
 EP=[];CF=[];
 for subject=subjectRange
     epoch=0;
+    dotest=false;
     for trial=1:35
         for i=1:12 routput{i}=[]; end
         for i=1:12 rcounter{i}=0; end
@@ -117,7 +124,6 @@ for subject=subjectRange
     end
     toc
     
-    
     %%
     epochRange=1:epoch;
     trainingRange = 1:nbofclassespertrial*15;
@@ -146,7 +152,7 @@ for subject=subjectRange
         while(iterate)
             fprintf('Bag Sizes %d vs %d \n', size(DE.C(1).IX,1),size(DE.C(2).IX,1));
             %[ACC, ERR, AUC, SC] = LDAClassifier(F,DE,channel,testRange,labelRange,false);
-            [ACC, ERR, AUC, SC] = NBNNClassifier3(F,DE,channel,testRange,labelRange,false);
+            [ACC, ERR, AUC, SC] = NBNNClassifier4(F,DE,channel,testRange,labelRange,false,'cosine');
             %[ACC, ERR, AUC, SC] = NNetClassifier(F,DE,labelRange,trainingRange,testRange,channel)
             P = SC.TN / (SC.TN+SC.FN);
             globalaccij1(subject,channel)=1-ERR/size(testRange,2);
@@ -288,10 +294,26 @@ for i=30:40
 end
 
 %%
-experiment='Butter de 3 a 4, K = 7, upsampling a 16, zscore a 3, NBNN con artefactos, normalized float Hellinger';
+experiment='Location adjustment,Butter de 3 a 4, K = 7, upsampling a 16, zscore a 3, NBNN con artefactos, normalized float coseine ';
 fid = fopen('experiment.log','a');
 fprintf(fid,'Experiment: %s \n', experiment);
 fprintf(fid,'st %f sv %f scale %f timescale %f qKS %d\n',siftscale(1),siftscale(2),imagescale,timescale,qKS);
 totals = DisplayTotals(subjectRange,globalaccij1,globalspeller,globalaccij2,globalspeller,channels)
 totals(:,6)
 fclose(fid)
+%%
+DisplayDescriptorImageFull(F,1,2,1,1,1,false);
+%%
+figure
+hold on
+for i=1:size(ML.C(2).M,2)
+    plot(ML.C(2).M(:,i),'x');
+end
+hold off
+figure
+hold on
+pp=randperm(size(ML.C(1).M,2),size(ML.C(2).M,2));
+for i=1:size(ML.C(2).M,2)
+    plot(ML.C(1).M(:,pp(i)),'x');
+end
+hold off

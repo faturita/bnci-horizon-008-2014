@@ -1,4 +1,4 @@
-function [ACC, ERR, AUC, SC] = NBNNClassifier4(F,DE,channel,testRange,labelRange)
+function [ACC, ERR, AUC, SC] = NBNNClassifier4(F,DE,channel,testRange,labelRange,graphics,distancetype)
 
 fprintf('Channel %d\n', channel);
 fprintf('Building Test Matrix M for Channel %d:', channel);
@@ -25,9 +25,9 @@ K = size(DE.C(2).M,2);
 D=[];
 for i=1:2:K
    ni=floor(i/2)+1;
-   Z= pdist2(DE.C(1).M(:,(ni-1)*10+1:(ni-1)*10+10)',DE.C(2).M(:,i:i+1)','cosine');
+   Z= pdist2(DE.C(1).M(:,(ni-1)*10+1:(ni-1)*10+10)',DE.C(2).M(:,i:i+1)',distancetype);
    %Z= pdist2(DE.C(1).M(:,i:i+1)',DE.C(2).M(:,i:i+1)','euclidean');
-   Di = sum(Z) 
+   Di = sum(Z) ;
    D(end+1)=Di(1);
    D(end+1)=Di(2);
 end
@@ -41,7 +41,7 @@ for f=1:size(testRange,2)/12
     
     K = size(DE.C(2).M,2);
 
-    [Z,I] = pdist2(DE.C(2).M',(TM(:,mind:maxd+6)'),'cosine','Smallest',K );
+    [Z,I] = pdist2(DE.C(2).M',(TM(:,mind:maxd+6)'),distancetype,'Smallest',K );
     
     k = 7;
 
