@@ -1,4 +1,4 @@
-function [ACC, ERR, AUC, SC] = LDAClassifier(F,DE,channel,testRange,labelRange)
+function [ACC, ERR, AUC, SC] = LDAClassifier(F,DE,channel,trainingRange,testRange,labelRange,graphics)
 
 fprintf('Channel %d\n', channel);
 fprintf('Building Test Matrix M for Channel %d:', channel);
@@ -28,93 +28,42 @@ score=[];
 M = [DE.C(1).M DE.C(2).M ];
 IX = [DE.C(1).IX ;DE.C(2).IX ];
 
-W = LDA( M', IX(:,2)');
 
-L = [M; ones(1,180)]' * W';
-%W = LDA( TM', TIX(:,2)');
+lbs= labelRange(trainingRange);
+tlbs= labelRange(testRange);
+H = double(M);
+TH = double(TM);
 
-P = exp(L) ./ repmat(sum(exp(L),2),[1 2]);
-P
+H = zscore(H);
+TH = zscore(TH);
 
-for f=1:size(testRange,2)/12
-    % Segundo metodo.  Se calcula la matriz de distancia entre los
-    % descriptores de la bolsa de hit y los 12 de este trial.
+% Fit a naive Bayes classifier
+%mdlNB = fitcnb(pred,resp);
 
-    %Z = dist((TM(:,mind:maxd+6)'),DE.C(2).M);
-    %Wgts = ones(1,size(DE.C(2).M,1));
-    %weuc = @(XI,XJ,W)(sqrt(bsxfun(@minus,XI,XJ).^2 * W'));
-    %Z = pdist2((TM(:,mind:maxd+6)'),DE.C(2).M',@(Xi,Xj) weuc(Xi,Xj,Wgts));
+fprintf('Clasificando con LDA para Matlab\n');
+
+MdlLinear = fitcdiscr(H',lbs','DiscrimType','pseudoQuadratic');
+
+[predicted,score,cost]  = predict(MdlLinear,TH');
+
+fprintf('Regularizacion: Pifies en la prediccion de la clase.\n');
+size(find(predicted ~= tlbs'))
+
+% Classification based on LDA
+
+[b,se,pval,inmodel,stats,nextstep,history] =  stepwisefit(H',lbs');
+
+
+if (size(find(inmodel==1),2)~=0)
     
-    %Z=Z';
+    MdlLinear = fitcdiscr(H(inmodel,:)',lbs','DiscrimType','pseudoQuadratic');
 
-    % Para el row, sumo en la primera direccion (along 30) para cada
-    % uno.   Tanto para los 6 primeros (fila) como los otros 6
-    % (columnas).
+    [predicted,score,cost] = predict(MdlLinear,TH(inmodel,:)');
 
-    %sumsrow = sum(Z(1:size(DE.C(2).M,2),1:6),1);
-    %sumscol = sum(Z(1:size(DE.C(2).M,2),7:12),1);
-
-    K = size(DE.C(2).M,2);
-
-    [Z,I] = pdist2(DE.C(2).M',(TM(:,mind:maxd+6)'),'euclidean','Smallest',K );
-    
-    k = 7;
-
-    %sumsrow = sum(Z(1:k,1:6),1);
-    %sumscol = sum(Z(1:k,7:12),1);
-    
-    %Wi = Epanechnikov(D(I(1:k,1:6))) ./ repmat(sum( Epanechnikov(D(I(1:k,1:6))) ),k,1) ;
-    
-    assert( k > 1, 'error');
-    
-    Wi = 1.-D(I(1:k,1:6))  ./   repmat  (   sum(D(I(1:k,1:6))),k,1  ) ;
-    Wi = Wi / (k-1);
-    
-    
-    %sumsrow = dot(Z(1:k,1:6),Wi(I(1:k,1:6)));
-    
-    sumsrow = dot(Z(1:k,1:6),Wi(1:k,1:6));
-    
-    %sumscol = dot(Z(1:k,7:12),Wi(I(1:k,7:12)));
-    
-    Wi = 1.-D(I(1:k,7:12))  ./   repmat  (   sum(D(I(1:k,7:12))),k,1  ) ;
-    Wi = Wi / (k-1);
-    
-    sumscol = dot(Z(1:k,7:12),Wi(1:k,1:6));
-
-    % Me quedo con aquel que la suma contra todos, dio menor.
-    [c, row] = min(sumsrow);
-    [c, col] = min(sumscol);
-    %col=col+6;
-
-    % I(1:3,1:6) Me da en cada columna los ids de los descriptores de M mas
-    % cercaos a cada uno de los descriptores de 1 a 6.
-
-    %SC.CLSF{test}.predicted = DE.C(I(1)).Label;  
-    %SC.CLSF{test}.IDX{clster} = IDX; 
-
-    % Las predicciones son 1 para todos excepto para row y col.
-    for i=1:6
-        if (i==row)
-            predicted(end+1) = 2;
-        else
-            predicted(end+1) = 1;
-        end
-        score(end+1) = 1-sumsrow(i)/sum(sumsrow);
-    end
-    for i=1:6
-        if (i==col)
-            predicted(end+1) = 2;
-        else
-            predicted(end+1) = 1;
-        end
-        score(end+1) = 1-sumscol(i)/sum(sumscol);
-    end
-
-    mind=mind+12;
-    maxd=maxd+12;
+    fprintf('Regularizacion: Pifies en la prediccion de la clase despues de stepwise.\n');
+    size(find(predicted ~= tlbs'))
 end
-score=score';
+
 
 %for channel=channelRange
 fprintf ('Channel %d -------------\n', channel);
@@ -135,7 +84,7 @@ C=confusionmat(expected, predicted)
 %end
 
 %[X,Y,T,AUC] = perfcurve(expected,single(predicted==2),2);
-[X,Y,T,AUC] = perfcurve(expected,score,2);
+[X,Y,T,AUC] = perfcurve(expected,score(:,2)',2);
 
 %figure;plot(X,Y)
 %xlabel('False positive rate')
@@ -153,7 +102,24 @@ SC.TN = C(1,1);
 [ACC, (SC.TP/(SC.TP+SC.FP))]
 
 SC.expected = expected;
-SC.predicted = predicted;    
+SC.predicted = predicted;  
+
+
+%%
+W = LDA( H(inmodel,:)', IX(:,2)');
+L = [H(inmodel,:); ones(1,420)]' * W';
+
+W = LDA( TH(inmodel,:)', TIX(:,2)');
+L = [TH(inmodel,:); ones(1,240)]' * W';
+
+P = exp(L) ./ repmat(sum(exp(L),2),[1 2]);
+
+[X,Y,T,AUC] = perfcurve(expected,P(:,2)',2);
+
+figure;plot(X,Y)
+xlabel('False positive rate')
+ylabel('True positive rate')
+title('ROC for Classification of P300')
+
 
 end
-

@@ -53,6 +53,7 @@ qKS=32-3;
 minimagesize=floor(sqrt(2)*15*siftscale(2)+1);
 amplitude=3;
 adaptative=false;
+k=7;
 
 siftdescriptordensity=1;
 Fs=256;
@@ -145,14 +146,14 @@ for subject=subjectRange
         [TM, TIX] = BuildDescriptorMatrix(F,channel,labelRange,testRange);
         fprintf('%d\n', size(TM,2));
         
-        DE = NBNNFeatureExtractor(F,channel,trainingRange,labelRange,[1 2],false);
+        DE = NBNNFeatureExtractor(F,channel,trainingRange,labelRange,[1 2],true);
         
         iterate=true;
         balancebags=false;
         while(iterate)
             fprintf('Bag Sizes %d vs %d \n', size(DE.C(1).IX,1),size(DE.C(2).IX,1));
-            %[ACC, ERR, AUC, SC] = LDAClassifier(F,DE,channel,testRange,labelRange,false);
-            [ACC, ERR, AUC, SC] = NBNNClassifier4(F,DE,channel,testRange,labelRange,false,'cosine');
+            %[ACC, ERR, AUC, SC] = LDAClassifier(F,DE,channel,trainingRange,testRange,labelRange,false);
+            [ACC, ERR, AUC, SC] = NBNNClassifier4(F,DE,channel,testRange,labelRange,false,'euclidean',k);
             %[ACC, ERR, AUC, SC] = NNetClassifier(F,DE,labelRange,trainingRange,testRange,channel)
             P = SC.TN / (SC.TN+SC.FN);
             globalaccij1(subject,channel)=1-ERR/size(testRange,2);
@@ -294,7 +295,7 @@ for i=30:40
 end
 
 %%
-experiment='Location adjustment,Butter de 3 a 4, K = 7, upsampling a 16, zscore a 3, NBNN con artefactos, normalized float coseine ';
+experiment=sprintf('Stepwisefit. Butter de 3 a 4, K = %d, upsampling a 16, zscore a 3,NBNN con artefactos, cosine float, unweighted without artifacts ',k);
 fid = fopen('experiment.log','a');
 fprintf(fid,'Experiment: %s \n', experiment);
 fprintf(fid,'st %f sv %f scale %f timescale %f qKS %d\n',siftscale(1),siftscale(2),imagescale,timescale,qKS);
