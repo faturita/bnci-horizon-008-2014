@@ -93,7 +93,7 @@ for i=1:12
                 qKS=sqKS(subject);
 %             end
 
-            [frames, desc] = PlaceDescriptorsByImage(eegimg, DOTS,siftscale, siftdescriptordensity,qKS,zerolevel);
+            [frames, desc] = PlaceDescriptorsByImage(eegimg, DOTS,siftscale, siftdescriptordensity,qKS,zerolevel,false,'cosine');
 
             F(channel,label,epoch).stim = i;
             F(channel,label,epoch).hit = hit{i};

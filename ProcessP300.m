@@ -146,14 +146,14 @@ for subject=subjectRange
         [TM, TIX] = BuildDescriptorMatrix(F,channel,labelRange,testRange);
         fprintf('%d\n', size(TM,2));
         
-        DE = NBNNFeatureExtractor(F,channel,trainingRange,labelRange,[1 2],true);
+        DE = NBNNFeatureExtractor(F,channel,trainingRange,labelRange,[1 2],false);
         
         iterate=true;
         balancebags=false;
         while(iterate)
             fprintf('Bag Sizes %d vs %d \n', size(DE.C(1).IX,1),size(DE.C(2).IX,1));
             %[ACC, ERR, AUC, SC] = LDAClassifier(F,DE,channel,trainingRange,testRange,labelRange,false);
-            [ACC, ERR, AUC, SC] = NBNNClassifier4(F,DE,channel,testRange,labelRange,false,'euclidean',k);
+            [ACC, ERR, AUC, SC] = NBNNClassifier4(F,DE,channel,testRange,labelRange,false,'cosine',k);
             %[ACC, ERR, AUC, SC] = NNetClassifier(F,DE,labelRange,trainingRange,testRange,channel)
             P = SC.TN / (SC.TN+SC.FN);
             globalaccij1(subject,channel)=1-ERR/size(testRange,2);
@@ -221,10 +221,12 @@ end
 for subject=subjectRange
     % '2'    'B'    'A'    'C'    'I'    '5'    'R'    'O'    'S'    'E'    'Z'  'U'    'P'    'P'    'A'   
     % 'G' 'A' 'T' 'T' 'O'    'M' 'E' 'N''T' 'E'   'V''I''O''L''A'  'R''E''B''U''S'
-    Speller = SpellMe(F,channelRange,16*12/nbofclassespertrial:35*12/nbofclassespertrial,labelRange,trainingRange,testRange,SBJ(subject).SC);
+    Speller = SpellMe(F,channelRange,16*nbofclassespertrial/12:35*nbofclassespertrial/12+(nbofclassespertrial/12-1),labelRange,trainingRange,testRange,SBJ(subject).SC);
 
     S = 'GATTOMENTEVIOLAREBUS';
-    S = repmat(S,12/nbofclassespertrial);
+    S = repmat(S,nbofclassespertrial/12);
+    S = reshape( S, [1 size(S,1)*size(S,2)]);
+    S=S(1:size(S,2)/(nbofclassespertrial/12));
     
     SpAcc = [];
     for channel=channelRange
@@ -295,7 +297,7 @@ for i=30:40
 end
 
 %%
-experiment=sprintf('Stepwisefit. Butter de 3 a 4, K = %d, upsampling a 16, zscore a 3,NBNN con artefactos, cosine float, unweighted without artifacts ',k);
+experiment=sprintf('Hellinger. Butter de 3 a 4, K = %d, upsampling a 16, zscore a 3,NBNN con artefactos, cosine float, unweighted without artifacts ',k);
 fid = fopen('experiment.log','a');
 fprintf(fid,'Experiment: %s \n', experiment);
 fprintf(fid,'st %f sv %f scale %f timescale %f qKS %d\n',siftscale(1),siftscale(2),imagescale,timescale,qKS);
