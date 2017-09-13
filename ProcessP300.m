@@ -1,7 +1,7 @@
 % Signal Averaging x Selection classification of P300 008-2014 dataset.
 
 % run('/Users/rramele/work/vlfeat/toolbox/vl_setup')
-% run('D:\MATLAB\vlfeat-0.9.18\toolbox\vl_setup');
+% run('D:/workspace/vlfeat/toolbox/vl_setup')
 % run('C:/vlfeat/toolbox/vl_setup')
 % P300 for ALS patients.
 
@@ -20,6 +20,7 @@ globalnumberofepochs=(2+10)*globalreps-1;
 clear mex;clearvars  -except global*;close all;clc;
 
 nbofclassespertrial=(2+10)*(10/globalreps);
+breakonepochlimit=(2+10)*10-1;
 
 % Clean all the directories where the images are located.
 cleanimagedirectory();
@@ -57,7 +58,7 @@ k=7;
 
 siftdescriptordensity=1;
 Fs=256;
-windowsize=1;
+windowsize=5;
 expcode=2400;
 show=0;
 % =====================================
@@ -89,7 +90,9 @@ for subject=subjectRange
         bpickercounter = 0;
         bwhichone = [0 1];%bwhichone=sort(randperm(10,2)-1);
         for flash=1:120
-            
+            if ((breakonepochlimit>0) && (processedflashes > breakonepochlimit))
+                break;
+            end
             % Process one epoch if the number of flashes has been reached.
             if (processedflashes>globalnumberofepochs)
                 P300ProcessSegment;
@@ -256,12 +259,20 @@ end
 % hold off
 
 
+
 %%
 subject=1;
 channel=7;
 SC=SBJ(subject).SC(channel);
 ML=SBJ(subject).DE(channel);
 F=SBJ(subject).F;
+
+for i=1:30
+    figure;DisplayDescriptorImageFull(F,subject,ML.C(2).IX(i,3),ML.C(2).IX(i,2),ML.C(2).IX(i,1),ML.C(2).IX(i,4),false);
+end
+
+%%
+
 figure('Name','Class 2 P300','NumberTitle','off');
 setappdata(gcf, 'SubplotDefaultAxesLocation', [0, 0, 1, 1]);
 fcounter=1;

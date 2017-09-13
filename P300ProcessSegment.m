@@ -21,9 +21,9 @@ for i=1:12
     channelRange = (1:size(routput{i},2));
     channelsize = size(channelRange,2);
         
-    assert( size(routput{i},1)/Fs == rcounter{i}, 'Something wrong with PtP average. Sizes do not match.');
+    assert( size(routput{i},1)/(Fs*windowsize) == rcounter{i}, 'Something wrong with PtP average. Sizes do not match.');
     
-    routput{i}=reshape(routput{i},[Fs size(routput{i},1)/Fs channelsize]); 
+    routput{i}=reshape(routput{i},[(Fs*windowsize) size(routput{i},1)/(Fs*windowsize) channelsize]); 
 
     for channel=channelRange
         rmean{i}(:,channel) = mean(routput{i}(:,:,channel),2);
@@ -66,11 +66,15 @@ for i=1:12
         rsignal{i}(:,c) = resample(rmean{i}(:,c),size(rmean{i},1)*timescale,size(rmean{i},1));
     end
 
-    rsignal{i} = zscore(rsignal{i})*amplitude; 
+    if (1==1)
+        rsignal{i} = zscore(rsignal{i})*amplitude; 
+    else
     
-    
-    %[n,m]=size(rsignal{i});
-    %rsignal{i}=rsignal{i} - ones(n,1)*mean(rsignal{i},1);
+        [n,m]=size(rsignal{i});
+        rsignal{i}=rsignal{i} - ones(n,1)*mean(rsignal{i},1);
+
+        rsignal{i} = rsignal{i}*amplitude;
+    end
             
     globalaverages{subject}{trial}{i}.rmean = rsignal{i};
     
@@ -93,7 +97,7 @@ for i=1:12
                 qKS=sqKS(subject);
 %             end
 
-            [frames, desc] = PlaceDescriptorsByImage(eegimg, DOTS,siftscale, siftdescriptordensity,qKS,zerolevel,false,'cosine');
+            [frames, desc] = PlaceDescriptorsByImage(eegimg, DOTS,siftscale, siftdescriptordensity,qKS,zerolevel,false,'euclidean');
 
             F(channel,label,epoch).stim = i;
             F(channel,label,epoch).hit = hit{i};
