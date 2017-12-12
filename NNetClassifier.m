@@ -1,4 +1,5 @@
-function [ACC, ERR, AUC, SC] = NNetClassifier(F,DE,labelRange,trainingRange,testRange,channel)
+function [DE, ACC, ERR, AUC, SC] = NNetClassifier(F,labelRange,trainingRange,testRange,channel)
+    DE = NBNNFeatureExtractor(F,channel,trainingRange,labelRange,[1 2],false); 
 
     fprintf('Channel %d\n', channel);
     fprintf('Building Test Matrix M for Channel %d:', channel);

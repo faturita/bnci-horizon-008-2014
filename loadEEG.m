@@ -11,14 +11,18 @@ for subject=subjectRange
     clear data.trial
     load(sprintf('%s%s008-2014%sA%02d.mat',getdatasetpath(),filesep,filesep,subject));
 
-    dataX = notchsignal(data.X, channelRange);
+    dataX = notchsignal(data.X, channelRange, Fs);
     datatrial = data.trial;
 
     
-    %dataX = decimateaveraging(dataX,channelRange,downsize);
     dataX = bandpasseeg(dataX, channelRange,Fs);
     dataX = decimatesignal(dataX,channelRange,downsize); 
+    
+    
+    %dataX = decimateaveraging(dataX,channelRange,downsize);
     %dataX = downsample(dataX,downsize);
+    
+    
     
     %l=randperm(size(data.y,1));
     %data.y = data.y(l);
@@ -34,7 +38,10 @@ for subject=subjectRange
             
             %EEG(subject,trial,flash).EEG = zeros((Fs/downsize)*windowsize,size(channelRange,2));
 
-            output = baselineremover(dataX,(ceil(datatrial(trial)/downsize)+ceil(64/downsize)*(flash-1)),(Fs/downsize)*windowsize,channelRange,downsize);
+            output = baselineremover(dataX,(ceil(datatrial(trial)/downsize)+ceil(64/downsize)*(flash-1))-floor((Fs/downsize)*windowsize/4),...
+                (Fs/downsize)*windowsize,...
+                channelRange,...
+                downsize);
 
             EEG(subject,trial,flash).label = data.y(data.trial(trial)+64*(flash-1));
             EEG(subject,trial,flash).stim = data.y_stim(data.trial(trial)+64*(flash-1));

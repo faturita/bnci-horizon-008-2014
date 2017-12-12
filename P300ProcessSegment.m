@@ -63,7 +63,8 @@ end
 for i=1:12
 
     for c=channelRange
-        rsignal{i}(:,c) = resample(rmean{i}(:,c),size(rmean{i},1)*timescale,size(rmean{i},1));
+        %rsignal{i}(:,c) = resample(rmean{i}(:,c),size(rmean{i},1)*timescale,size(rmean{i},1));
+        rsignal{i}(:,c) = resample(rmean{i}(:,c),1:size(rmean{i},1),timescale);
     end
 
     if (1==1)
@@ -97,8 +98,21 @@ for i=1:12
                 qKS=sqKS(subject);
 %             end
 
-            [frames, desc] = PlaceDescriptorsByImage(eegimg, DOTS,siftscale, siftdescriptordensity,qKS,zerolevel,false,'euclidean');
+            [frames, desc] = PlaceDescriptorsByImage(eegimg, DOTS,siftscale, siftdescriptordensity,qKS,zerolevel,false,'cosine');
 
+%figure;DisplayDescriptorGradient('baseimageonscale.txt');
+
+%figure;[I,A] = DisplayDescriptorGradient('grads.txt');
+
+%figure;
+%DisplayDescriptorImageByImageAndGradient(frames,desc,eegimg,1,A,false);
+
+%DisplayDescriptorImageByImage(frames,desc,eegimg,1,true);
+
+            
+%fdsfds            
+            
+            
             F(channel,label,epoch).stim = i;
             F(channel,label,epoch).hit = hit{i};
             

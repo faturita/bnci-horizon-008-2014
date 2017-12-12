@@ -1,97 +1,95 @@
-function [ACC, ERR, AUC, SC] = LDAClassifier(F,DE,channel,trainingRange,testRange,labelRange,graphics)
-
+function [DE, ACC, ERR, AUC, SC] = LDAClassifier(F,labelRange,trainingRange,testRange,channel)
 fprintf('Channel %d\n', channel);
 fprintf('Building Test Matrix M for Channel %d:', channel);
 [TM, TIX] = BuildDescriptorMatrix(F,channel,labelRange,testRange);
 fprintf('%d\n', size(TM,2));
 
-%fprintf('Channel %d\n', channel);
-%fprintf('Building Test Matrix M for Channel %d:', channel);
-%[M, IX] = BuildDescriptorMatrix(F,channel,labelRange,trainingRange);
-%fprintf('%d\n', size(TM,2));
+fprintf('Building Training Matrix M for Channel %d:', channel);
+[M, IX] = BuildDescriptorMatrix(F,channel,labelRange,trainingRange);
+fprintf('%d\n', size(M,2));
 
 
-%DE = NBNNFeatureExtractor(F,channel,trainingRange,labelRange,[1 2], false);
+DE = NBNNFeatureExtractor(F,channel,trainingRange,labelRange,[1 2],false);
 
-% Este metodo toma en consideracion que la clasificacion binaria se usa
-% para un speller de p300.
+%fprintf('Bag Sizes %d vs %d \n', size(DE.C(1).IX,1),size(DE.C(2).IX,1)); 
 
-assert( mod(size(testRange,2),12)==0, 'This method only works for P300 spellers');
+expected=labelRange(testRange);
 
-mind = 1;
-maxd = 6;
-
-SC.CLSF = {};
-predicted=[];
-score=[];
-
-M = [DE.C(1).M DE.C(2).M ];
-IX = [DE.C(1).IX ;DE.C(2).IX ];
-
+% OJO si hay mas de un descriptor por imagen.
 
 lbs= labelRange(trainingRange);
-tlbs= labelRange(testRange);
 H = double(M);
 TH = double(TM);
 
-H = zscore(H);
-TH = zscore(TH);
 
 % Fit a naive Bayes classifier
 %mdlNB = fitcnb(pred,resp);
 
-fprintf('Clasificando con LDA para Matlab\n');
-
-MdlLinear = fitcdiscr(H',lbs','DiscrimType','pseudoQuadratic');
-
-[predicted,score,cost]  = predict(MdlLinear,TH');
-
-fprintf('Regularizacion: Pifies en la prediccion de la clase.\n');
-size(find(predicted ~= tlbs'))
-
 % Classification based on LDA
+%b = stepwisefit(H,lbs');
 
-[b,se,pval,inmodel,stats,nextstep,history] =  stepwisefit(H',lbs');
 
+mdl = stepwiseglm(H', lbs'-1,'constant','upper','linear','distr','binomial');
 
-if (size(find(inmodel==1),2)~=0)
-    
-    MdlLinear = fitcdiscr(H(inmodel,:)',lbs','DiscrimType','pseudoQuadratic');
-
-    [predicted,score,cost] = predict(MdlLinear,TH(inmodel,:)');
-
-    fprintf('Regularizacion: Pifies en la prediccion de la clase despues de stepwise.\n');
-    size(find(predicted ~= tlbs'))
+if (mdl.NumEstimatedCoefficients>1 && false)
+   inmodel = [];
+   for i=2:mdl.NumEstimatedCoefficients
+       inmodel = [inmodel str2num(mdl.CoefficientNames{i}(2:end))];
+   end
+   H = H(inmodel,:);
+   TH = TH(inmodel,:);
 end
 
 
-%for channel=channelRange
-fprintf ('Channel %d -------------\n', channel);
+size(TH)
+size(H)
+size(lbs)
 
-%M = MM(channel).M;
-%IX = MM(channel).IX;
+H=zscore(H);
+TH=zscore(TH);
 
-expected = labelRange(testRange);
+lbls = classify(TH',H',lbs','linear');
 
+% Classification based on SWLDA
+c = cvpartition(lbs,'k',10);
+opts = statset('display','iter');
+fun = @(XT,yT,Xt,yt)...
+      (sum(~strcmp(yt,classify(Xt,XT,yT,'linear'))));
 
-%predicted=randi(unique(labelRange),size(expected))
+%[fs,history] = sequentialfs(fun,pred,resp,'cv',c,'options',opts);
 
-C=confusionmat(expected, predicted)
+% 
+% size(H')
+% size(lbs)
+% 
+% %[fs,history] = sequentialfs(fun,H,lbs)
+% 
+% 
+% sM = M(:,fs);
+% 
+% fs
+% size(TM)
+% size(sM)
+% size(lbs)
+% 
+% %swldalbls = classify(TM,sM,lbs,'linear');
 
+group = lbls;
 
-%if (C(1,1)+C(2,2) > 65)
-%    error('done');
-%end
+predicted = group';
 
-%[X,Y,T,AUC] = perfcurve(expected,single(predicted==2),2);
-[X,Y,T,AUC] = perfcurve(expected,score(:,2)',2);
+size(predicted)
+size(labelRange(testRange))
 
-%figure;plot(X,Y)
-%xlabel('False positive rate')
-%ylabel('True positive rate')
-%title('ROC for Classification of P300')
+C=confusionmat(labelRange(testRange), predicted)
+
+[X,Y,T,AUC] = perfcurve(expected,predicted,2);
 
 ACC = (C(1,1)+C(2,2)) / size(predicted,2);
+
+
+SC.CLSF = {};
+
 ERR = size(predicted,2) - (C(1,1)+C(2,2));
 
 SC.FP = C(2,1);
@@ -103,23 +101,5 @@ SC.TN = C(1,1);
 
 SC.expected = expected;
 SC.predicted = predicted;  
-
-
-%%
-W = LDA( H(inmodel,:)', IX(:,2)');
-L = [H(inmodel,:); ones(1,420)]' * W';
-
-W = LDA( TH(inmodel,:)', TIX(:,2)');
-L = [TH(inmodel,:); ones(1,240)]' * W';
-
-P = exp(L) ./ repmat(sum(exp(L),2),[1 2]);
-
-[X,Y,T,AUC] = perfcurve(expected,P(:,2)',2);
-
-figure;plot(X,Y)
-xlabel('False positive rate')
-ylabel('True positive rate')
-title('ROC for Classification of P300')
-
 
 end

@@ -20,7 +20,7 @@ globalnumberofepochs=(2+10)*globalreps-1;
 clear mex;clearvars  -except global*;close all;clc;
 
 nbofclassespertrial=(2+10)*(10/globalreps);
-breakonepochlimit=(2+10)*10-1;
+breakonepochlimit=(2+10)*globalrepetitions-1;
 
 % Clean all the directories where the images are located.
 cleanimagedirectory();
@@ -58,7 +58,7 @@ k=7;
 
 siftdescriptordensity=1;
 Fs=256;
-windowsize=5;
+windowsize=1;
 expcode=2400;
 show=0;
 % =====================================
@@ -242,62 +242,64 @@ for subject=subjectRange
         spellingacc = counter/size(S,2);
         SpAcc(end+1) = spellingacc;
         globalspeller(subject,channel) = spellingacc;
+        %globalspeller(subject,channel,globalrepetitions) = spellingacc;
+    
     end
     [a,b] = max(SpAcc);
 end
 
 
 %%
-% hold on
-% for subject=1:1
-%     for trial=1:1
-%         for i=1:12
-%             plot(globalaverages{subject}{trial}{i}.rmean(:,channel));
-%         end
-%     end
-% end
-% hold off
+hold on
+for subject=1:1
+    for trial=1:1
+        for i=1:12
+            %plot(globalaverages{subject}{trial}{i}.rmean(:,channel));
+        end
+    end
+end
+hold off
 
 
 
-%%
-subject=1;
-channel=7;
+%
+subject=3;
+channel=1;
 SC=SBJ(subject).SC(channel);
 ML=SBJ(subject).DE(channel);
 F=SBJ(subject).F;
 
-for i=1:30
-    figure;DisplayDescriptorImageFull(F,subject,ML.C(2).IX(i,3),ML.C(2).IX(i,2),ML.C(2).IX(i,1),ML.C(2).IX(i,4),false);
-end
-
-%%
-
-figure('Name','Class 2 P300','NumberTitle','off');
-setappdata(gcf, 'SubplotDefaultAxesLocation', [0, 0, 1, 1]);
-fcounter=1;
-for i=1:30
-    ah=subplot_tight(6,5,fcounter,[0 0]);
-    DisplayDescriptorImageFull(F,subject,ML.C(2).IX(i,3),ML.C(2).IX(i,2),ML.C(2).IX(i,1),ML.C(2).IX(i,4),true);
-    fcounter=fcounter+1;
-end
-figure('Name','Class 1','NumberTitle','off');
-setappdata(gcf, 'SubplotDefaultAxesLocation', [0, 0, 1, 1]);
-fcounter=1;
-for i=1:30
-    ah=subplot_tight(6,5,fcounter,[0 0]);
-    DisplayDescriptorImageFull(F,subject,ML.C(1).IX(i,3),ML.C(1).IX(i,2),ML.C(1).IX(i,1),ML.C(1).IX(i,4),true);
-    fcounter=fcounter+1;
-end
+% for i=1:30
+%     figure;DisplayDescriptorImageFull(F,subject,ML.C(2).IX(i,3),ML.C(2).IX(i,2),ML.C(2).IX(i,1),ML.C(2).IX(i,4),false);
+% end
+% 
+% %%
+% 
+% figure('Name','Class 2 P300','NumberTitle','off');
+% setappdata(gcf, 'SubplotDefaultAxesLocation', [0, 0, 1, 1]);
+% fcounter=1;
+% for i=1:30
+%     ah=subplot_tight(6,5,fcounter,[0 0]);
+%     DisplayDescriptorImageFull(F,subject,ML.C(2).IX(i,3),ML.C(2).IX(i,2),ML.C(2).IX(i,1),ML.C(2).IX(i,4),true);
+%     fcounter=fcounter+1;
+% end
+% figure('Name','Class 1','NumberTitle','off');
+% setappdata(gcf, 'SubplotDefaultAxesLocation', [0, 0, 1, 1]);
+% fcounter=1;
+% for i=1:30
+%     ah=subplot_tight(6,5,fcounter,[0 0]);
+%     DisplayDescriptorImageFull(F,subject,ML.C(1).IX(i,3),ML.C(1).IX(i,2),ML.C(1).IX(i,1),ML.C(1).IX(i,4),true);
+%     fcounter=fcounter+1;
+% end
 [TM, TIX] = BuildDescriptorMatrix(F,channel,labelRange,testRange(labelRange(testRange)==2));
-fcounter=1;
-figure('Name','P300 Query','NumberTitle','off');
-setappdata(gcf, 'SubplotDefaultAxesLocation', [0, 0, 1, 1]);
-for i=1:30
-    ah=subplot_tight(6,5,fcounter,[0 0]);
-    DisplayDescriptorImageFull(F,subject,TIX(i,3),TIX(i,2),TIX(i,1),TIX(i,4),true);
-    fcounter=fcounter+1;
-end
+% fcounter=1;
+% figure('Name','P300 Query','NumberTitle','off');
+% setappdata(gcf, 'SubplotDefaultAxesLocation', [0, 0, 1, 1]);
+% for i=1:30
+%     ah=subplot_tight(6,5,fcounter,[0 0]);
+%     DisplayDescriptorImageFull(F,subject,TIX(i,3),TIX(i,2),TIX(i,1),TIX(i,4),true);
+%     fcounter=fcounter+1;
+% end
 figure('Name','P300 Query (resto)','NumberTitle','off');
 setappdata(gcf, 'SubplotDefaultAxesLocation', [0, 0, 1, 1]);
 fcounter=1;
