@@ -22,7 +22,7 @@ H = double(M);
 TH = double(TM);
 
 % Go SVM
-svmStruct = svmtrain(H',lbs,'ShowPlot',true,'kernel_function','linear'); %, 'method','QP');
+svmStruct = svmtrain(H',lbs,'ShowPlot',true,'kernel_function','linear','kktviolationlevel',1); %, 'method','QP');
 group = svmclassify(svmStruct,H');
 
 % Check Regularizaton

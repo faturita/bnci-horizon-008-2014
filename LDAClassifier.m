@@ -28,25 +28,31 @@ TH = double(TM);
 % Classification based on LDA
 %b = stepwisefit(H,lbs');
 
-
-mdl = stepwiseglm(H', lbs'-1,'constant','upper','linear','distr','binomial');
-
-if (mdl.NumEstimatedCoefficients>1 && false)
-   inmodel = [];
-   for i=2:mdl.NumEstimatedCoefficients
-       inmodel = [inmodel str2num(mdl.CoefficientNames{i}(2:end))];
-   end
-   H = H(inmodel,:);
-   TH = TH(inmodel,:);
+warning('off','all')
+if (true)
+    mdl = stepwiseglm(H', lbs'-1,'constant','upper','linear','distr','binomial');
+    if (mdl.NumEstimatedCoefficients>1)
+       inmodel = [];
+       for i=2:mdl.NumEstimatedCoefficients
+           inmodel = [inmodel str2num(mdl.CoefficientNames{i}(2:end))];
+       end
+       H = H(inmodel,:);
+       TH = TH(inmodel,:);
+    end
 end
+
+
 
 
 size(TH)
 size(H)
 size(lbs)
 
-H=zscore(H);
-TH=zscore(TH);
+H=zscore(H');
+TH=zscore(TH');
+
+H=H';
+TH=TH';
 
 lbls = classify(TH',H',lbs','linear');
 

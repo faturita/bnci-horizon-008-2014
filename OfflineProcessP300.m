@@ -64,9 +64,8 @@ classifier=6;
 %featuretype=2;
 %timescale=1;
 %applyzscore=false;
-%classifier=4;
-subjectRange=8:8;
-windowsize=2;
+%classifier=6;
+windowsize=1;
 % =====================================
 
 % EEG(subject,trial,flash)
@@ -127,10 +126,12 @@ for subject=subjectRange
 
             rput{i}=reshape(rput{i},[(Fs*windowsize) size(rput{i},1)/(Fs*windowsize) channelsize]); 
 
-            dly = de2bi(globaldelays,10);
-            rput{i} = TimeWarping(rput{i},dly,channelRange);
+            %dly = de2bi(globaldelays,10);
+            %rput{i} = TimeWarping(rput{i},dly,channelRange);
             
-            rput{i}= rput{i}(9:9+16-1,:,:);
+            %rput{i} = DynamicTimeWarping(rput{i},channelRange);
+            
+            %rput{i}= rput{i}(size(rput{i},1)/4+1:size(rput{i},1)/4+1+size(rput{i},1)/2-1,:,:);
             
             for channel=channelRange
                 rmean{i}(:,channel) = mean(rput{i}(:,:,channel),2);
@@ -229,6 +230,8 @@ if (featuretype == 1)
         SBJ(subject).testRange = testRange;
         
         
+        
+        
     end
 else
     for subject=subjectRange
@@ -321,7 +324,7 @@ for subject=subjectRange
             for channel=channelRange
                 DE(channel) = NBNNFeatureExtractor(F,channel,trainingRange,labelRange,[1 2],false); 
    
-                %[ACC, ERR, AUC, SC(channel)] = NBMultiClass(F,DE(channel),channel,testRange,labelRange,false);
+                %[ACC, ERR, AUC, SC(channel)] = NBMultiClass(F,DE(channel),channel,testRange,labelRange,distancetype,k);
                 [ACC, ERR, AUC, SC(channel)] = NBNNClassifier4(F,DE(channel),channel,testRange,labelRange,false,distancetype,k);                                                        
                 
                 globalaccij1(subject,channel)=1-ERR/size(testRange,2);
@@ -355,18 +358,18 @@ for subject=subjectRange
         end
         spellingacc = counter/size(S,2);
         SpAcc(end+1) = spellingacc;
-        %globalspeller(subject,channel) = spellingacc;
-        globalspeller(subject,channel,globaldelays+1) = spellingacc;
+        globalspeller(subject,channel) = spellingacc;
+        %globalspeller(subject,channel,globaldelays+1) = spellingacc;
     
     end
     [a,b] = max(SpAcc);
 end
 
-% experiment=sprintf('Hellinger. Butter de 3 a 4, K = %d, upsampling a 16, zscore a 3,NBNN con artefactos, cosine float, unweighted without artifacts ',k);
-% fid = fopen('experiment.log','a');
-% fprintf(fid,'Experiment: %s \n', experiment);
-% fprintf(fid,'st %f sv %f scale %f timescale %f qKS %d\n',siftscale(1),siftscale(2),imagescale,timescale,qKS);
-% totals = DisplayTotals(subjectRange,globalaccij1,globalspeller,globalaccij2,globalspeller,channels)
-% totals(:,6)
-% fclose(fid)
+experiment=sprintf('Hellinger. Butter de 3 a 4, K = %d, upsampling a 16, zscore a 3,NBNN con artefactos, cosine float, unweighted without artifacts ',k);
+fid = fopen('experiment.log','a');
+fprintf(fid,'Experiment: %s \n', experiment);
+fprintf(fid,'st %f sv %f scale %f timescale %f qKS %d\n',siftscale(1),siftscale(2),imagescale,timescale,qKS);
+totals = DisplayTotals(subjectRange,globalaccij1,globalspeller,globalaccij2,globalspeller,channels)
+totals(:,6)
+fclose(fid)
 
