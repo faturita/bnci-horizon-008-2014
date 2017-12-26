@@ -48,7 +48,7 @@ minimagesize=floor(sqrt(2)*15*siftscale(2)+1);
 amplitude=3;
 adaptative=false;
 k=7;
-artifactcheck=false;
+artifactcheck=true;
 
 siftdescriptordensity=1;
 Fs=256;
@@ -61,11 +61,12 @@ featuretype=1;
 distancetype='cosine';
 classifier=6;
 
-%featuretype=2;
-%timescale=1;
-%applyzscore=false;
-%classifier=6;
-windowsize=1;
+% featuretype=2;
+% timescale=1;
+% applyzscore=false;
+% classifier=1;
+% amplitude=1;
+% windowsize=1;
 % =====================================
 
 % EEG(subject,trial,flash)
@@ -87,11 +88,16 @@ for subject=subjectRange
     for trial=1:35
         for i=1:12 hit{subject}{trial}{i} = 0; end
         for i=1:12 routput{subject}{trial}{i} = []; end
+        processedflashes=0;
         for flash=1:120
+            if ((breakonepochlimit>0) && (processedflashes > breakonepochlimit))
+                break;
+            end            
             % Skip artifacts
             if (artifactcheck && EEG(subject,trial,flash).isartifact)
                 continue;
             end
+            processedflashes = processedflashes+1;
             output = EEG(subject,trial,flash).EEG;
             routput{subject}{trial}{EEG(subject,trial,flash).stim} = [routput{subject}{trial}{EEG(subject,trial,flash).stim} ;output];
             hit{subject}{trial}{EEG(subject,trial,flash).stim} = EEG(subject,trial,flash).label;
@@ -102,7 +108,7 @@ end
 for subject=subjectRange
     for trial=1:35
         for i=1:12 rcounter{subject}{trial}{i} = 0; end
-        for flash=1:120
+        for flash=1:120 
             rcounter{subject}{trial}{EEG(subject,trial,flash).stim} = rcounter{subject}{trial}{EEG(subject,trial,flash).stim}+1;
         end
         % Check if all the epochs contain 10 repetitions.
@@ -122,7 +128,7 @@ for subject=subjectRange
             channelRange = (1:size(rput{i},2));
             channelsize = size(channelRange,2);
 
-            assert( artifactcheck || size(rput{i},1)/(Fs*windowsize) == rcounter{subject}{trial}{i}, 'Something wrong with PtP average. Sizes do not match.');
+            assert( globalrepetitions<10 || artifactcheck || size(rput{i},1)/(Fs*windowsize) == rcounter{subject}{trial}{i}, 'Something wrong with PtP average. Sizes do not match.');
 
             rput{i}=reshape(rput{i},[(Fs*windowsize) size(rput{i},1)/(Fs*windowsize) channelsize]); 
 
@@ -229,9 +235,6 @@ if (featuretype == 1)
         SBJ(subject).trainingRange = trainingRange;
         SBJ(subject).testRange = testRange;
         
-        
-        
-        
     end
 else
     for subject=subjectRange
@@ -274,6 +277,7 @@ else
         SBJ(subject).trainingRange = trainingRange;
         SBJ(subject).testRange = testRange;        
     end
+    channelRange = 1:1;
 end
 
 
@@ -360,6 +364,7 @@ for subject=subjectRange
         SpAcc(end+1) = spellingacc;
         globalspeller(subject,channel) = spellingacc;
         %globalspeller(subject,channel,globaldelays+1) = spellingacc;
+        globalspellerrep(subject,channel,globalrepetitions) = spellingacc;
     
     end
     [a,b] = max(SpAcc);

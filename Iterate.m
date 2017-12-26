@@ -1,5 +1,5 @@
 for globalrepetitions=1:10
-    ProcessP300
+    run('OfflineProcessP300.m');
 end
 
 %%
@@ -7,8 +7,8 @@ figure;
 hold on
 linestyles={'-','--',':','-.','-+','-o','-*','-.'};
 for subject=1:8
-    [val, ord] = max(globalspeller(subject,:,10))
-    y=globalspeller(subject,ord,:);
+    [val, ord] = max(globalspellerrep(subject,:,10))
+    y=globalspellerrep(subject,ord,:);
     y=reshape(y, [1 10])
     y=y*100;
     Xi = 0:0.1:size(y,2);
