@@ -1,6 +1,14 @@
+for globalamplitude=1:5
+    run('OfflineProcessP300.m');    
+end
+fdsfds
+
 for globalrepetitions=1:10
     run('OfflineProcessP300.m');
 end
+
+
+
 
 %%
 figure;

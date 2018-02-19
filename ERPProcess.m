@@ -63,13 +63,19 @@ featuretype=1;
 distancetype='cosine';
 classifier=6;
 
+% windowsize=2;
+% featuretype=3;
+% applyzscore=false;
+% artifactcheck=true;
+
+% windowsize = 0.8;
+% downsize = 12;
+% 
 % featuretype=2;
 % timescale=1;
 % applyzscore=false;
 % classifier=4;
 % amplitude=1;
-% windowsize=1;
-% downsize=16;
 % artifactcheck=true;
 % =====================================
 
@@ -90,10 +96,11 @@ sqKS = [37; 19; 37; 38; 33; 35; 35; 37];
 % Build routput pasting epochs toghether...
 for subject=subjectRange
     for trial=1:35
-        for i=1:12 hit{subject}{trial}{i} = 0; end
-        for i=1:12 routput{subject}{trial}{i} = []; end
+        for classes=1:120/(globalnumberofepochs+1);for i=1:12 hit{subject}{trial}{classes}{i} = 0; end; end
+        for classes=1:120/(globalnumberofepochs+1);for i=1:12 routput{subject}{trial}{classes}{i} = []; end; end
         processedflashes=0;
         for flash=1:120
+            classes = floor((flash-1)/(globalnumberofepochs+1))+1;
             if ((breakonepochlimit>0) && (processedflashes > breakonepochlimit))
                 break;
             end            
@@ -103,22 +110,22 @@ for subject=subjectRange
             end
             processedflashes = processedflashes+1;
             output = EEG(subject,trial,flash).EEG;
-            routput{subject}{trial}{EEG(subject,trial,flash).stim} = [routput{subject}{trial}{EEG(subject,trial,flash).stim} ;output];
-            hit{subject}{trial}{EEG(subject,trial,flash).stim} = EEG(subject,trial,flash).label;
+            routput{subject}{trial}{classes}{EEG(subject,trial,flash).stim} = [routput{subject}{trial}{classes}{EEG(subject,trial,flash).stim} ;output];
+            hit{subject}{trial}{classes}{EEG(subject,trial,flash).stim} = EEG(subject,trial,flash).label;
         end
     end
 end
 
 for subject=subjectRange
     for trial=1:35
-        for i=1:12 rcounter{subject}{trial}{i} = 0; end
+        for classes=1:120/(globalnumberofepochs+1);for i=1:12 rcounter{subject}{trial}{classes}{i} = 0; end; end
         for flash=1:120 
-            rcounter{subject}{trial}{EEG(subject,trial,flash).stim} = rcounter{subject}{trial}{EEG(subject,trial,flash).stim}+1;
+            classes = floor((flash-1)/(globalnumberofepochs+1))+1;
+            rcounter{subject}{trial}{classes}{EEG(subject,trial,flash).stim} = rcounter{subject}{trial}{classes}{EEG(subject,trial,flash).stim}+1;
         end
         % Check if all the epochs contain 10 repetitions.
-        for i=1:12
-            assert( rcounter{subject}{trial}{i} == 10 );
-        end
+        
+        for classes=1:120/(globalnumberofepochs+1); for i=1:12 assert( rcounter{subject}{trial}{classes}{i} == (120/nbofclassespertrial) ); end; end
     end
 end
 
@@ -126,60 +133,63 @@ for subject=subjectRange
     h=[];
     Word=[];
     for trial=1:35
-        hh = [];
-        for i=1:12
-            rput{i} = routput{subject}{trial}{i};
-            channelRange = (1:size(rput{i},2));
-            channelsize = size(channelRange,2);
+        for classes=1:120/(globalnumberofepochs+1)
+            hh = [];
+            for i=1:12
+                rput{i} = routput{subject}{trial}{classes}{i};
+                channelRange = (1:size(rput{i},2));
+                channelsize = size(channelRange,2);
 
-            assert( globalrepetitions<10 || artifactcheck || size(rput{i},1)/(Fs*windowsize) == rcounter{subject}{trial}{i}, 'Something wrong with PtP average. Sizes do not match.');
+                assert( globalrepetitions<10 || artifactcheck || size(rput{i},1)/ceil(Fs*windowsize) == rcounter{subject}{trial}{classes}{i}, 'Something wrong with PtP average. Sizes do not match.');
 
-            rput{i}=reshape(rput{i},[ceil(Fs*windowsize) size(rput{i},1)/ceil(Fs*windowsize) channelsize]); 
+                rput{i}=reshape(rput{i},[ceil(Fs*windowsize) size(rput{i},1)/ceil(Fs*windowsize) channelsize]); 
 
-            %dly = de2bi(globaldelays,10);
-            %rput{i} = TimeWarping(rput{i},dly,channelRange);
-            
-            %rput{i} = DynamicTimeWarping(rput{i},channelRange);
-            
-            %rput{i}= rput{i}(size(rput{i},1)/4+1:size(rput{i},1)/4+1+size(rput{i},1)/2-1,:,:);
-            
-            for channel=channelRange
-                rmean{i}(:,channel) = mean(rput{i}(:,:,channel),2);
+                %dly = de2bi(globaldelays,10);
+                %rput{i} = TimeWarping(rput{i},dly,channelRange);
+
+                %rput{i} = DynamicTimeWarping(rput{i},channelRange);
+
+                %rput{i}= rput{i}(size(rput{i},1)/4+1:size(rput{i},1)/4+1+size(rput{i},1)/2-1,:,:);
+
+                for channel=channelRange
+                    rmean{i}(:,channel) = mean(rput{i}(:,:,channel),2);
+                end
+
+                if (hit{subject}{trial}{classes}{i} == 2)
+                    h = [h i];
+                    hh = [hh i];
+                end    
+                routput{subject}{trial}{classes}{i} = rmean{i};
             end
-
-            if (hit{subject}{trial}{i} == 2)
-                h = [h i];
-                hh = [hh i];
-            end    
-            routput{subject}{trial}{i} = rmean{i};
+            Word = [Word SpellMeLetter(hh(1),hh(2))];
         end
-        Word = [Word SpellMeLetter(hh(1),hh(2))];
     end
 end
 
 for subject=subjectRange
     for trial=1:35
-        
-        for i=1:12
+        for classes=1:120/(globalnumberofepochs+1)
+            for i=1:12
 
-            rmean{i} = routput{subject}{trial}{i};
-            
-            if (timescale ~= 1)
-                for c=channelRange
-                    %rsignal{i}(:,c) = resample(rmean{i}(:,c),size(rmean{i},1)*timescale,size(rmean{i},1));
-                    rsignal{i}(:,c) = resample(rmean{i}(:,c),1:size(rmean{i},1),timescale);
+                rmean{i} = routput{subject}{trial}{classes}{i};
+
+                if (timescale ~= 1)
+                    for c=channelRange
+                        %rsignal{i}(:,c) = resample(rmean{i}(:,c),size(rmean{i},1)*timescale,size(rmean{i},1));
+                        rsignal{i}(:,c) = resample(rmean{i}(:,c),1:size(rmean{i},1),timescale);
+                    end
+                else
+                    rsignal{i} = rmean{i};
                 end
-            else
-                rsignal{i} = rmean{i};
-            end
 
-            if (applyzscore)
-                rsignal{i} = zscore(rsignal{i})*amplitude;
-           else
-                rsignal{i} = rsignal{i}*amplitude;
+                if (applyzscore)
+                    rsignal{i} = zscore(rsignal{i})*amplitude;
+               else
+                    rsignal{i} = rsignal{i}*amplitude;
+                end
+
+                routput{subject}{trial}{classes}{i} = rsignal{i};
             end
-            
-            routput{subject}{trial}{i} = rsignal{i};
         end
     end
 end
@@ -193,14 +203,15 @@ if (featuretype == 1)
         labelRange=[];
         epochRange=[];
         stimRange=[];
-        for trial=1:35        
+        for trial=1:35  
+            for classes=1:120/(globalnumberofepochs+1)
             for i=1:12
             epoch=epoch+1;    
-            label = hit{subject}{trial}{i};
+            label = hit{subject}{trial}{classes}{i};
             labelRange(epoch) = label;
             stimRange(epoch) = i;
             DS = [];
-            rsignal{i}=routput{subject}{trial}{i};
+            rsignal{i}=routput{subject}{trial}{classes}{i};
             for channel=channelRange
                 %minimagesize=1;
                 [eegimg, DOTS, zerolevel] = eegimage(channel,rsignal{i},imagescale,1, false,minimagesize);
@@ -213,17 +224,22 @@ if (featuretype == 1)
     %                qKS=ceil(0.20*(Fs)*timescale):floor(0.20*(Fs)*timescale+(Fs)*timescale/4-1);
     %             else
                     qKS=sqKS(subject);
+                    %qKS=qKS-10:qKS+10;
+                    %qKS=qKS';
+                    %zerolevel=0;
                     %qKS=125;
+                    %qKS=32;
     %             end
                 %qKS=-10+sqKS(subject):10+sqKS(subject);
                 %qKS=qKS';
                 [frames, desc] = PlaceDescriptorsByImage(eegimg, DOTS,siftscale, siftdescriptordensity,qKS,zerolevel,false,distancetype);            
                 F(channel,label,epoch).stim = i;
-                F(channel,label,epoch).hit = hit{subject}{trial}{i};
+                F(channel,label,epoch).hit = hit{subject}{trial}{classes}{i};
 
 
                 F(channel,label,epoch).descriptors = desc;
                 F(channel,label,epoch).frames = frames; 
+            end
             end
             end
         end
@@ -247,19 +263,20 @@ elseif (featuretype==3)
         labelRange=[];
         epochRange=[];
         stimRange=[];
-        for trial=1:35        
+        for trial=1:35  
+            for classes=1:120/(globalnumberofepochs+1)
             for i=1:12
             epoch=epoch+1;    
-            label = hit{subject}{trial}{i};
+            label = hit{subject}{trial}{classes}{i};
             labelRange(epoch) = label;
             stimRange(epoch) = i;
             DS = [];
-            rsignal{i}=routput{subject}{trial}{i};
+            rsignal{i}=routput{subject}{trial}{classes}{i};
             for channel=channelRange
                 %minimagesize=1;
                 [eegimg, DOTS, zerolevel, height] = eegimageinvariant(channel,rsignal{i},imagescale,1, false,minimagesize);
-                                                                      
-                siftscale(1) = 11.7851;
+                                                         
+                siftscale(1) = 3;
                 siftscale(2) = (height-1)/(sqrt(2)*15);
                 saveeegimage(subject,epoch,label,channel,eegimg);
                 zerolevel = size(eegimg,1)/2;
@@ -268,17 +285,26 @@ elseif (featuretype==3)
     %                qKS=ceil(0.20*(Fs)*timescale):floor(0.20*(Fs)*timescale+(Fs)*timescale/4-1);
     %             else
                     qKS=sqKS(subject);
+                    [pks,loc] = findpeaks(rsignal{1}(:,channel));
+                    f=loc(loc>50);
+                    qKS=f(1);
+                    if (qKS<=0)
+                        qKS=sqKS(subject);
+                    end
+                    %qKS=qKS-10:qKS+10;
+                    %qKS=qKS';
                     %qKS=125;
     %             end
 
 
                 [frames, desc] = PlaceDescriptorsByImage(eegimg, DOTS,siftscale, siftdescriptordensity,qKS,zerolevel,false,distancetype);            
                 F(channel,label,epoch).stim = i;
-                F(channel,label,epoch).hit = hit{subject}{trial}{i};
+                F(channel,label,epoch).hit = hit{subject}{trial}{classes}{i};
 
 
                 F(channel,label,epoch).descriptors = desc;
                 F(channel,label,epoch).frames = frames; 
+            end
             end
             end
         end
@@ -302,14 +328,15 @@ elseif (featuretype==2)
         labelRange=[];
         epochRange=[];
         stimRange=[];
-        for trial=1:35        
+        for trial=1:35   
+            for classes=1:120/(globalnumberofepochs+1)
             for i=1:12
                 epoch=epoch+1;    
-                label = hit{subject}{trial}{i};
+                label = hit{subject}{trial}{classes}{i};
                 labelRange(epoch) = label;
                 stimRange(epoch) = i;
                 DS = [];
-                rsignal{i}=routput{subject}{trial}{i};
+                rsignal{i}=routput{subject}{trial}{classes}{i};
 
                 feature = [];
 
@@ -318,11 +345,12 @@ elseif (featuretype==2)
                 end  
 
                 for channel=channelRange
-                    F(channel,label,epoch).hit = hit{subject}{trial}{i};
+                    F(channel,label,epoch).hit = hit{subject}{trial}{classes}{i};
                     F(channel,label,epoch).descriptors = feature;
                     F(channel,label,epoch).frames = [];   
                     F(channel,label,epoch).stim = i;
                 end    
+            end
             end
         end
         epochRange=1:epoch;
@@ -386,9 +414,10 @@ for subject=subjectRange
         case 6
             for channel=channelRange
                 DE(channel) = NBNNFeatureExtractor(F,channel,trainingRange,labelRange,[1 2],false); 
-   
-                [ACC, ERR, AUC, SC(channel)] = NBMultiClass(F,DE(channel),channel,testRange,labelRange,distancetype,k);
-                [ACC, ERR, AUC, SC(channel)] = NBNNClassifier4(F,DE(channel),channel,testRange,labelRange,false,distancetype,k);                                                        
+                %[ACC, ERR, AUC, SC(channel)] = NBMultiClass(F,DE(channel),channel,testRange,labelRange,distancetype,k);
+                %[ACC, ERR, AUC, SC(channel)] = NBNNClassifier4(F,DE(channel),channel,testRange,labelRange,false,distancetype,k);                                                        
+                [ACC, ERR, AUC, SC(channel)] = NBKNNP300Classifier(F,DE(channel),channel,testRange,labelRange,distancetype,k);                                                        
+                %[ACC, ERR, AUC, SC(channel)] = BciSiftNBNNClassifier(F,DE(channel),channel,testRange,labelRange,0,false);
                 
                 globalaccij1(subject,channel)=1-ERR/size(testRange,2);
                 globalaccij2(subject,channel)=AUC;
@@ -434,7 +463,7 @@ fid = fopen('experiment.log','a');
 fprintf(fid,'Experiment: %s \n', experiment);
 fprintf(fid,'st %f sv %f scale %f timescale %f qKS %d\n',siftscale(1),siftscale(2),imagescale,timescale,qKS);
 totals = DisplayTotals(subjectRange,globalaccij1,globalspeller,globalaccij2,globalspeller,channels)
-totals(:,6)
+totals(:,8)
 fclose(fid)
 
 %DisplayDescriptorImageFull(F,1,2,1,1,1,false);

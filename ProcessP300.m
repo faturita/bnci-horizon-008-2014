@@ -52,9 +52,9 @@ imagescale=4;    % Para agarrar dos decimales NN.NNNN
 timescale=4;
 qKS=32-3;
 minimagesize=floor(sqrt(2)*15*siftscale(2)+1);
-amplitude=3;
+amplitude=3; % BEST in 1-5
 adaptative=false;
-k=7;
+k=7;  % BEST
 
 siftdescriptordensity=1;
 Fs=256;

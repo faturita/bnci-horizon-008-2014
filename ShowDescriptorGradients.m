@@ -1,6 +1,11 @@
 
+subject=1;
+epoch=2;
+label=1;
+channel=1;
 
-signal=globalaverages{subject}{trial}{1}.rmean;
+
+%signal=globalaverages{subject}{trial}{1}.rmean;
 
 fprintf('s.%d.e.%d.l.%d.c.%d.tif\n',subject,epoch,label,channel);
 I1 = imread(sprintf('%ss.%d.e.%d.l.%d.c.%d.tif',getimagepath(),subject,epoch,label,channel));
@@ -8,6 +13,7 @@ I1 = imread(sprintf('%ss.%d.e.%d.l.%d.c.%d.tif',getimagepath(),subject,epoch,lab
 %figure;
 fprintf('Image Size: %d,%d \n',size(I1,1),size(I1,2));
 
+patternimage = I1;
 
 [patternframes, descriptors] = PlaceDescriptorsByImage(patternimage, patternDOTS,[st sv], siftdescriptordensity,qKS,zerolevel,true);
 
