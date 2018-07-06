@@ -1,6 +1,6 @@
 %
-subject=3;
-channel=2;
+subject=8;
+channel=7;
 SC=SBJ(subject).SC(channel);
 ML=SBJ(subject).DE(channel);
 F=SBJ(subject).F;
@@ -8,7 +8,7 @@ F=SBJ(subject).F;
 for i=1:30
    figure;DisplayDescriptorImageFull(F,subject,ML.C(2).IX(i,3),ML.C(2).IX(i,2),ML.C(2).IX(i,1),ML.C(2).IX(i,4),false);
 end
-fdsfs
+
 %%
 
 figure('Name','Class 2 P300','NumberTitle','off');
