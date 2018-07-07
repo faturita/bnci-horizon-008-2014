@@ -984,3 +984,83 @@ st 3.000000 sv 3.000000 scale 4.000000 timescale 4.000000 qKS 37
 6     &   0.89 &   0.90& PO7& 0.5500 $\pm$ 0.5500 \\
 7     &   0.89 &   0.88& PO8& 0.7000 $\pm$ 0.7000 \\
 8     &   0.92 &   0.80& PO7& 0.7000 $\pm$ 0.7000 \\
+Experiment: Hellinger. Butter de 3 a 4, K = 7, upsampling a 16, zscore a 3,NBNN con artefactos, cosine float, unweighted without artifacts  
+st 3.000000 sv 3.000000 scale 4.000000 timescale 4.000000 qKS 37
+1     &   0.84 &   0.85& Cz & 0.3500 $\pm$ 0.3500 \\
+2     &   0.86 &   0.79& Fz & 0.8500 $\pm$ 0.8500 \\
+3     &   0.87 &   0.82& Cz & 0.2500 $\pm$ 0.2500 \\
+4     &   0.86 &   0.79& PO8& 0.5500 $\pm$ 0.5500 \\
+5     &   0.86 &   0.79& PO7& 0.4000 $\pm$ 0.4000 \\
+6     &   0.89 &   0.87& PO7& 0.6000 $\pm$ 0.6000 \\
+7     &   0.89 &   0.88& PO8& 0.8000 $\pm$ 0.8000 \\
+8     &   0.92 &   0.87& PO7& 0.9500 $\pm$ 0.9500 \\
+Experiment: Hellinger. Butter de 3 a 4, K = 7, upsampling a 16, zscore a 3,NBNN con artefactos, cosine float, unweighted without artifacts  
+st 3.000000 sv 3.000000 scale 4.000000 timescale 4.000000 qKS 29
+1     &   0.84 &   0.90& P3 & 0.5000 $\pm$ 0.4000 \\
+2     &   0.86 &   0.94& Fz & 0.5500 $\pm$ 0.5500 \\
+3     &   0.87 &   0.93& Cz & 0.6500 $\pm$ 0.5000 \\
+4     &   0.86 &   0.88& Fz & 0.5000 $\pm$ 0.5000 \\
+5     &   0.86 &   0.92& Cz & 0.5000 $\pm$ 0.4500 \\
+6     &   0.89 &   0.96& Fz & 0.7000 $\pm$ 0.7000 \\
+7     &   0.89 &   0.92& Cz & 0.4500 $\pm$ 0.4000 \\
+8     &   0.92 &   1.00& Fz & 1.0000 $\pm$ 1.0000 \\
+Experiment: Hellinger. Butter de 3 a 4, K = 7, upsampling a 16, zscore a 3,NBNN con artefactos, cosine float, unweighted without artifacts  
+st 3.000000 sv 3.000000 scale 4.000000 timescale 4.000000 qKS 29
+1     &   0.84 &   0.75& Cz & 0.1500 $\pm$ 0.1500 \\
+2     &   0.86 &   0.69& PO8& 0.2500 $\pm$ 0.2500 \\
+3     &   0.87 &   0.62& Fz & 0.0500 $\pm$ 0.0500 \\
+4     &   0.86 &   0.67& Fz & 0.0500 $\pm$ 0.0000 \\
+5     &   0.86 &   0.58& P3 & 0.2500 $\pm$ 0.2500 \\
+6     &   0.89 &   0.77& Fz & 0.2000 $\pm$ 0.1500 \\
+7     &   0.89 &   0.85& Fz & 0.3000 $\pm$ 0.3000 \\
+8     &   0.92 &   0.84& PO7& 0.8500 $\pm$ 0.8500 \\
+Experiment: Hellinger. Butter de 3 a 4, K = 7, upsampling a 16, zscore a 3,NBNN con artefactos, cosine float, unweighted without artifacts  
+st 3.000000 sv 3.000000 scale 4.000000 timescale 1.000000 qKS 29
+1     &   0.84 &   0.75& Cz & 0.1000 $\pm$ 0.0500 \\
+2     &   0.86 &   0.76& Fz & 0.3000 $\pm$ 0.2500 \\
+3     &   0.87 &   0.66& Pz & 0.1000 $\pm$ 0.1000 \\
+4     &   0.86 &   0.75& PO8& 0.1500 $\pm$ 0.1500 \\
+5     &   0.86 &   0.78& Cz & 0.1500 $\pm$ 0.1500 \\
+6     &   0.89 &   0.84& Fz & 0.4000 $\pm$ 0.4000 \\
+7     &   0.89 &   0.85& Fz & 0.3000 $\pm$ 0.3000 \\
+8     &   0.92 &   0.82& PO7& 0.8500 $\pm$ 0.8500 \\
+Experiment: Hellinger. Butter de 3 a 4, K = 7, upsampling a 16, zscore a 3,NBNN con artefactos, cosine float, unweighted without artifacts  
+st 3.000000 sv 3.000000 scale 4.000000 timescale 4.000000 qKS 29
+1     &   0.84 &   0.75& Cz & 0.1500 $\pm$ 0.1500 \\
+2     &   0.86 &   0.69& PO8& 0.2500 $\pm$ 0.2500 \\
+3     &   0.87 &   0.62& Fz & 0.0500 $\pm$ 0.0500 \\
+4     &   0.86 &   0.67& Fz & 0.0500 $\pm$ 0.0000 \\
+5     &   0.86 &   0.58& P3 & 0.2500 $\pm$ 0.2500 \\
+6     &   0.89 &   0.77& Fz & 0.2000 $\pm$ 0.1500 \\
+7     &   0.89 &   0.85& Fz & 0.3000 $\pm$ 0.3000 \\
+8     &   0.92 &   0.84& PO7& 0.8500 $\pm$ 0.8500 \\
+Experiment: Hellinger. Butter de 3 a 4, K = 7, upsampling a 16, zscore a 3,NBNN con artefactos, cosine float, unweighted without artifacts  
+st 3.000000 sv 3.000000 scale 4.000000 timescale 4.000000 qKS 29
+1     &   0.84 &   0.62& P3 & 0.0500 $\pm$ 0.0500 \\
+2     &   0.86 &   0.60& PO8& 0.1500 $\pm$ 0.1500 \\
+3     &   0.87 &   0.53& PO7& 0.0500 $\pm$ 0.0000 \\
+4     &   0.86 &   0.71& Oz & 0.1000 $\pm$ 0.1000 \\
+5     &   0.86 &   0.56& P4 & 0.1500 $\pm$ 0.0500 \\
+6     &   0.89 &   0.60& Oz & 0.1000 $\pm$ 0.0000 \\
+7     &   0.89 &   0.52& Oz & 0.1000 $\pm$ 0.0500 \\
+8     &   0.92 &   0.75& PO8& 0.2500 $\pm$ 0.2500 \\
+Experiment: Hellinger. Butter de 3 a 4, K = 7, upsampling a 16, zscore a 3,NBNN con artefactos, cosine float, unweighted without artifacts  
+st 3.000000 sv 3.000000 scale 4.000000 timescale 4.000000 qKS 29
+1     &   0.84 &   0.73& PO8& 0.1000 $\pm$ 0.1000 \\
+2     &   0.86 &   0.74& Pz & 0.1000 $\pm$ 0.1000 \\
+3     &   0.87 &   0.69& Oz & 0.0500 $\pm$ 0.0000 \\
+4     &   0.86 &   0.74& Oz & 0.0500 $\pm$ 0.0000 \\
+5     &   0.86 &   0.72& Fz & 0.0500 $\pm$ 0.0000 \\
+6     &   0.89 &   0.69& Fz & 0.1000 $\pm$ 0.1000 \\
+7     &   0.89 &   0.76& Fz & 0.1000 $\pm$ 0.0500 \\
+8     &   0.92 &   0.78& Cz & 0.1000 $\pm$ 0.0500 \\
+Experiment: Hellinger. Butter de 3 a 4, K = 7, upsampling a 16, zscore a 3,NBNN con artefactos, cosine float, unweighted without artifacts  
+st 3.000000 sv 3.000000 scale 4.000000 timescale 4.000000 qKS 29
+1     &   0.84 &   0.62& P3 & 0.0500 $\pm$ 0.0500 \\
+2     &   0.86 &   0.60& PO8& 0.1500 $\pm$ 0.1500 \\
+3     &   0.87 &   0.53& PO7& 0.0500 $\pm$ 0.0000 \\
+4     &   0.86 &   0.71& Oz & 0.1000 $\pm$ 0.1000 \\
+5     &   0.86 &   0.56& P4 & 0.1500 $\pm$ 0.0500 \\
+6     &   0.89 &   0.60& Oz & 0.1000 $\pm$ 0.0000 \\
+7     &   0.89 &   0.52& Oz & 0.1000 $\pm$ 0.0500 \\
+8     &   0.92 &   0.75& PO8& 0.2500 $\pm$ 0.2500 \\

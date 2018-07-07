@@ -5,6 +5,7 @@
 % run('C:/vlfeat/toolbox/vl_setup')
 % P300 for ALS patients.
 
+
 clear globalspeller
 clear globalaccij1
 clear globalaccij2
@@ -50,7 +51,7 @@ minimagesize=floor(sqrt(2)*15*siftscale(2)+1);
 amplitude=3;   % Best 1-5
 adaptative=false;
 k=7; % Best
-artifactcheck=false;
+artifactcheck=true;
 
 invariantlocation=false
 siftdescriptordensity=1;
@@ -80,11 +81,12 @@ classifier=6;
 %downsize = 12;
 %windowsize=2;
 %
-% featuretype=2;
-% timescale=1;
-% applyzscore=false;
-% classifier=4;
-% amplitude=1;
+featuretype=6;classifier=6;% PE Single channel NNBN Classifier
+featuretype=6;classifier=4;% PE Single channel SVM Classifier
+%timescale=1;
+%applyzscore=false;
+%classifier=6;
+%amplitude=1;
 % artifactcheck=true;
 % =====================================
 
@@ -339,7 +341,61 @@ for subject=subjectRange
                     end
                 end
             end
+        case 4
             
+            
+            for trial=1:35
+                for classes=1:120/(globalnumberofepochs+1)
+                    for i=1:12
+                        epoch=epoch+1;
+                        label = hit{subject}{trial}{classes}{i};
+                        labelRange(epoch) = label;
+                        stimRange(epoch) = i;
+                        DS = [];
+                        rsignal{i}=routput{subject}{trial}{classes}{i};
+                        
+                        feature = [];
+                        
+                        for channel=channelRange
+                            feature = rsignal{i}(:,channel);
+                            feature = (1/norm(feature))*feature;
+                            
+                            F(channel,label,epoch).hit = hit{subject}{trial}{classes}{i};
+                            F(channel,label,epoch).descriptors = feature;
+                            F(channel,label,epoch).frames = [];
+                            F(channel,label,epoch).stim = i;
+                        end
+                    end
+                end
+            end   
+        case 6
+            for trial=1:35
+                for classes=1:120/(globalnumberofepochs+1)
+                    for i=1:12
+                        epoch=epoch+1;
+                        label = hit{subject}{trial}{classes}{i};
+                        labelRange(epoch) = label;
+                        stimRange(epoch) = i;
+                        DS = [];
+                        rsignal{i}=routput{subject}{trial}{classes}{i};
+                        
+                        feature = [];
+                        
+                        for channel=channelRange
+                            feature = rsignal{i}(:,channel);
+  
+                            feature=PE(feature,1,2,10);
+                            
+                            feature=feature';
+                            
+                            F(channel,label,epoch).hit = hit{subject}{trial}{classes}{i};
+                            F(channel,label,epoch).descriptors = feature;
+                            F(channel,label,epoch).frames = [];
+                            F(channel,label,epoch).stim = i;
+                        end
+                    end
+                end
+            end                 
     end
     epochRange=1:epoch;
     trainingRange = 1:nbofclassespertrial*15;
@@ -452,5 +508,6 @@ fprintf(fid,'st %f sv %f scale %f timescale %f qKS %d\n',siftscale(1),siftscale(
 totals = DisplayTotals(subjectRange,globalaccij1,globalspeller,globalaccij2,globalspeller,channels)
 totals(:,8)
 fclose(fid)
+fprintf('%s \n',channels{totals(:,5)})
 
 %DisplayDescriptorImageFull(F,1,2,1,1,1,false);
