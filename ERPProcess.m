@@ -5,6 +5,7 @@
 % run('C:/vlfeat/toolbox/vl_setup')
 % P300 for ALS patients.
 
+% This is the main script to process this dataset using SIFT.
 
 clear globalspeller
 clear globalaccij1
@@ -81,8 +82,8 @@ classifier=6;
 %downsize = 12;
 %windowsize=2;
 %
-featuretype=6;classifier=6;% PE Single channel NNBN Classifier
-featuretype=6;classifier=4;% PE Single channel SVM Classifier
+%featuretype=6;classifier=6;% PE Single channel NNBN Classifier
+%featuretype=6;classifier=4;% PE Single channel SVM Classifier
 %timescale=1;
 %applyzscore=false;
 %classifier=6;
