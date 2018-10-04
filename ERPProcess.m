@@ -54,7 +54,7 @@ adaptative=false;
 k=7; % Best
 artifactcheck=true;
 
-invariantlocation=false
+invariantlocation=false;
 siftdescriptordensity=1;
 Fs=256;
 windowsize=1;

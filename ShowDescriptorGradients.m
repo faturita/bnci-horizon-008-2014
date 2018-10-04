@@ -4,8 +4,8 @@ epoch=2;
 label=1;
 channel=1;
 
-st=1;
-sv=1;
+st=3;
+sv=3;
 
 %signal=globalaverages{subject}{trial}{1}.rmean;
 
@@ -20,7 +20,7 @@ rsignal{i}=routput{subject}{trial}{classes}{i};
 %figure;
 %fprintf('Image Size: %d,%d \n',size(I1,1),size(I1,2));
 
-[eegimg, DOTS, zerolevel] = eegimage(channel,rsignal{i},imagescale,1, false,minimagesize);
+[eegimg, DOTS, zerolevel] = eegimage(channel,rsignal{i},imagescale,1, false,minimagesize,true);
 patternimage = eegimg;
 patternDOTS = DOTS;
 
@@ -45,9 +45,9 @@ reshape(descriptors, [8 16] )
 figure;DisplayDescriptorGradient('baseimageonscale.txt');
 CropFigure();
 figure;[I,A] = DisplayDescriptorGradient('grads.txt');
-CropFigure();
+CropFigure(20);
 figure;
-DisplayDescriptorImageByImageAndGradient(patternframes,descriptors,patternimage,1,A,false);
-CropFigure();
+DisplayDescriptorImageByImageAndGradient(patternframes,descriptors,patternimage,1,A,true);
+CropFigure(10);
 print('sample','-depsc');
 
